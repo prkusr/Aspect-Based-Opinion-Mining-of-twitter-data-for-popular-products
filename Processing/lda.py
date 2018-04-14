@@ -46,7 +46,7 @@ if __name__ == "__main__":
     topics = ldaModel.topicsMatrix()
     vocabArray = model.vocabulary
 
-    wordNumbers = 4  # number of words per topic
+    wordNumbers = 5  # number of words per topic
     topicIndices = sc.parallelize(ldaModel.describeTopics(maxTermsPerTopic = wordNumbers))
 
     def topic_render(topic):  # specify vector id of words to actual words
@@ -58,10 +58,13 @@ if __name__ == "__main__":
         return result
 
     topics_final = topicIndices.map(lambda topic: topic_render(topic)).collect()
-
+    # fo = codecs.open('Topics.txt', 'w', encoding='utf-8')
     for topic in range(len(topics_final)):
+        fo = codecs.open('Topic'+str(topic)+'.txt', 'w', encoding='utf-8')
         print ("Topic" + str(topic) + ":")
         for term in topics_final[topic]:
             print (term)
+            fo.write(term+'\n')
         print ('\n')
+        fo.close()
     spark.stop()

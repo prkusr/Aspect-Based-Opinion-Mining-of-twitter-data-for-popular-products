@@ -1,37 +1,3 @@
-# from pyspark.ml.clustering import LDA
-# # $example off$
-# from pyspark.sql import SparkSession
-
-# if __name__ == "__main__":
-#     spark = SparkSession \
-#         .builder \
-#         .appName("LDAExample") \
-#         .getOrCreate()
-
-#     # $example on$
-#     # Loads data.
-#     dataset = spark.read.format("libsvm").load("example.csv")
-
-#     # Trains a LDA model.
-#     lda = LDA(k=10, maxIter=10)
-#     model = lda.fit(dataset)
-
-#     ll = model.logLikelihood(dataset)
-#     lp = model.logPerplexity(dataset)
-#     print("The lower bound on the log likelihood of the entire corpus: " + str(ll))
-#     print("The upper bound on perplexity: " + str(lp))
-
-#     # Describe topics.
-#     topics = model.describeTopics(3)
-#     print("The topics described by their top-weighted terms:")
-#     topics.show(truncate=False)
-
-#     # Shows the result
-#     transformed = model.transform(dataset)
-#     transformed.show(truncate=False)
-#     # $example off$
-
-#     spark.stop()
 import codecs
 from nltk.corpus import stopwords
 from pyspark.sql import SparkSession

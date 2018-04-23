@@ -34,6 +34,6 @@ class MapComponent extends Component{
 }
 
 export default GoogleApiWrapper({
-	apiKey: 'AIzaSyDbQzPWZY2-zkHUCJvkyS1A_47EQ516p5s',
+	apiKey: '',
 	libraries: ['visualization']
 })(MapComponent)

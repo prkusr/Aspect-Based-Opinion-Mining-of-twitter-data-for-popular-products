@@ -59,7 +59,7 @@ export default class TweetMap extends Component {
 					content: `<h3>${position.weight}</h3>`
 				});
 
-				marker.addListener('click', function() {
+				marker.addListener("click", function() {
 					infowindow.open(this.map, marker);
 				});
 			});
@@ -73,15 +73,15 @@ export default class TweetMap extends Component {
 	}
 
 	render() {
-	    const style = {
-	      width: '85vw',
-	      height: '75vh'
-	    }
+		const style = {
+			width: "85vw",
+			height: "75vh"
+		};
 
-	    return (
-	      <div ref="map" style={style}>
-	        loading map...
-	      </div>
-	    )
-  	}
+		return (
+			<div ref="map" style={style}>
+				loading map...
+			</div>
+		);
+	}
 }

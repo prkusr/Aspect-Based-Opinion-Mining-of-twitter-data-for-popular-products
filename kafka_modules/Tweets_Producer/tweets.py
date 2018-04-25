@@ -27,12 +27,17 @@ for message in search_string_consumer:
               "https://***/****/**.json")
     g.execute("{} lang:{} has:{}".format(search_string, language, filter_param), max_results)
 
-    tweets_json_str = '{"tweets": [%s]}' % ", ".join([json.dumps(x) for x in g.get_activity_set()])
+    futures = []
+    for x in g.get_activity_set():
+        tweet_json_str = json.dumps(x)
+        future = tweet_producer.send(sending_topic, tweet_json_str)
+        futures.append(future)
 
-    future = tweet_producer.send(sending_topic, tweets_json_str)
-    try:
-        record_metadata = future.get(timeout=10)
-    except KafkaError:
-        # Error occurred Tweet Json not sent!
-        # TODO: Figure out what to do in this case.
-        pass
+    for i, future in enumerate(futures):
+        try:
+            record_metadata = future.get(timeout=10)
+        except KafkaError:
+            # Error occurred Tweet Json not sent!
+            # TODO: Figure out what to do in this case.
+            print('Tweet number %i was not sent to Kafka' % i)
+            pass

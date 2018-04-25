@@ -53,7 +53,8 @@ public class Main {
         while (true) {
             ConsumerRecords<String, String> records = consumer.poll(10);
             for (ConsumerRecord<String, String> record : records)
-                System.out.printf("value = %s\n\n\n\n", record.value());
+                System.out.printf("Key = %s \nOffset = %s \nPartition = %s \nValue = %s\n\n\n\n", record.key(),
+                                                          record.offset(), record.partition(), record.value());
         }
     }
 }

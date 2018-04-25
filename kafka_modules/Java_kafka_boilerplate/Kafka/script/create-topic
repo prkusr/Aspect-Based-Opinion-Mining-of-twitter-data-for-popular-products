@@ -1,7 +1,0 @@
-if [ $# -eq 0 ]
-  then
-    echo "usage: create-topic topic_name"
-else
-	kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic $1
-
-fi

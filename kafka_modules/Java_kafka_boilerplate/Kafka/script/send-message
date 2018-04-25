@@ -1,6 +1,0 @@
-if [ $# -eq 0 ]
-  then
-    echo "usage: send-message topic_name"
-else
-    kafka-console-producer --broker-list localhost:9092 --topic $1
-fi

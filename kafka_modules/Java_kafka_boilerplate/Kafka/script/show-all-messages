@@ -1,6 +1,0 @@
-if [ $# -eq 0 ]
-  then
-    echo "usage: show-all-messages topic_name"
-else
-    kafka-console-consumer --bootstrap-server localhost:9092 --topic $1 --from-beginning
-fi

@@ -1,0 +1,15 @@
+apply plugin:'java'
+apply plugin: "maven"
+apply plugin: 'application'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/edu.stanford.nlp/stanford-parser
+    compile group: 'edu.stanford.nlp', name: 'stanford-corenlp', version: '3.7.0'
+}
+
+sourceSets.main.java.srcDirs = ['src']
+mainClassName = 'edu.bigdata.kafkaspark.Main'

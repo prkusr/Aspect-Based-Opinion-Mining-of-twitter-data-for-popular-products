@@ -2,16 +2,17 @@
 # from nltk.corpus import stopwords
 
 # from textblob import TextBlob
+from nltk.corpus import wordnet as wn
 from nltk.parse.stanford import StanfordDependencyParser
 import codecs
 import re
-import category_dict
+import cat_dict
 path_to_jar = '/Users/payoj/Downloads/stanford-corenlp-full-2018-02-27/stanford-corenlp-3.9.1.jar'
 path_to_models_jar = '/Users/payoj/Downloads/stanford-corenlp-full-2018-02-27/stanford-corenlp-3.9.1-models.jar'
 dependency_parser = StanfordDependencyParser(path_to_jar=path_to_jar, path_to_models_jar=path_to_models_jar)
 
 
-category_dictionary = category_dict.main()
+category_dictionary = cat_dict.category_dict()
 
 def process_tweet(tweet):
 	# for tweet in tweets:
@@ -83,41 +84,75 @@ def get_term(parsed_list):
 def get_aspect_category(aspect_term):
 	tweet_aspect_categories = {}
 	for adj in aspect_term['JJ']:
-		for aspect_category in category_dictionary:
-			if adj in category_dictionary[aspect_category]:
-				if aspect_category not in tweet_aspect_categories:
-					tweet_aspect_categories[aspect_category] = []
-				tweet_aspect_categories[aspect_category].append(adj)
+		aspect_category_list = []
+		
+		for nn in aspect_term['NN']:
+			aspect_category_flag = -100
+			overall_aspect_category = ''
+			if len(nn)> 1 and nn[1] == adj:
+				aspect = nn[0]
+			
+				print 'Aspect, word', aspect, nn[1]
+				for aspect_category in category_dictionary:
+					if adj in category_dictionary[aspect_category]:
+						# if aspect_category == '':
+						# 	aspect_category = 'appearance'
+						aspect_category_list.append(aspect_category)
+				
+					
+						# aspect_category_flag = max(aspect_category_flag,detect_similarity(aspect, aspect_category))
+						score = detect_similarity(aspect, aspect_category)
+						if aspect_category_flag < score:
+							overall_aspect_category = aspect_category
+							aspect_category_flag = score
+							print aspect_category_flag
+						# if aspect_category_flag != 0:
+			if overall_aspect_category != '':
+				if overall_aspect_category not in tweet_aspect_categories:
+					tweet_aspect_categories[overall_aspect_category] = []
+				tweet_aspect_categories[overall_aspect_category].append(nn[0])
 	print tweet_aspect_categories
 	return tweet_aspect_categories
 
-def detect_similarity(aspect_term):
+def detect_similarity(aspect_term, aspect_category):
 	
 	#print
 	#print value, wn.synsets(value)[0]
+	print aspect_term, aspect_category
 	try:
-		wn_term = wn.synsets(term)[0]
+		
+		aspect_vector = wn.synsets(aspect_term)[0]
+
 	except:
-		#print term
-		return
+		return 0
 
-	max_score = -100
-	max_sim = ''
-	for cat, value in synset_categories.iteritems():
-		sim_score = wn.wup_similarity(wn_term, value)
+	aspect_category_vector = wn.synsets(aspect_category)[0]
+	# try:
+	# 	wn_term = wn.synsets(term)[0]
+	# except:
+	# 	#print term
+	# 	return
+
+	# max_score = -100
+	# max_sim = ''
+	# for cat, value in synset_categories.iteritems():
+	sim_score = wn.wup_similarity(aspect_category_vector, aspect_vector)
+	print sim_score
 		#print cat, term, sim_score
-		if sim_score > max_score:
-			max_score = sim_score
-			max_sim = cat
+	if sim_score >= 0 and sim_score != None:
+		return sim_score
+	return 0
+	# 		max_score = sim_score
+	# 		max_sim = cat
 
-	temp = []
-	temp.append(max_sim)
-	temp.append(max_score)
+	# temp = []
+	# temp.append(max_sim)
+	# temp.append(max_score)
 
-	if temp[1] >= 0.5:
-		return temp
-	else:
-		return
+	# if temp[1] >= 0.5:
+	# 	return temp
+	# else:
+		# return
 
 def get_aspect_sentiment(adj):
 	sentiment_score = TextBlob(adj).sentiment.polarity
@@ -141,10 +176,15 @@ def get_category_sentiment(aspect_dict):
 
 tweets = []
 f = codecs.open('example.txt', 'r', encoding = 'utf-8')
+count = 0
 for line in f:
 	line = line.strip()
 	tweets.append(line)
+	count += 1
+	if count >= 4:
+		break
 f.close()
+
 for tweet in tweets:
 	processed_tweet = process_tweet(tweet)
 	relation = parsing(processed_tweet)
@@ -153,4 +193,4 @@ for tweet in tweets:
 		category = get_aspect_category(aspects)
 	# tweet_category_sentiment = get_category_sentiment(category)
 	# print(tweet_category_sentiment)
-	print(category)
+	# print(category)

@@ -33,8 +33,8 @@ public class Main {
         producer.close();
     }
 
-    public void consumer() {
-        String topicName = "tweets";
+    public static void main(String args[]) {
+        String topicName = "opinions";
         Properties props = new Properties();
 
         props.put("bootstrap.servers", "localhost:9092");
@@ -52,9 +52,11 @@ public class Main {
 
         while (true) {
             ConsumerRecords<String, String> records = consumer.poll(10);
-            for (ConsumerRecord<String, String> record : records)
+            for (ConsumerRecord<String, String> record : records) {
+                System.out.println("Java Backend Received Opinions!");
                 System.out.printf("Key = %s \nOffset = %s \nPartition = %s \nValue = %s\n\n\n\n", record.key(),
-                                                          record.offset(), record.partition(), record.value());
+                                                           record.offset(), record.partition(), record.value());
+            }
         }
     }
 }

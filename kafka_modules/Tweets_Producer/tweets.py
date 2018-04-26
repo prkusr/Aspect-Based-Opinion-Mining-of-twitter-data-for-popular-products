@@ -41,3 +41,4 @@ for message in search_string_consumer:
             # TODO: Figure out what to do in this case.
             print('Tweet number %i was not sent to Kafka' % i)
             pass
+    print("Python Module: Tweet send to Spark Module")

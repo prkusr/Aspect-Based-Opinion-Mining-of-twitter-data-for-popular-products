@@ -1,0 +1,4 @@
+MASTER=<aws_ip>
+SLAVE=<aws_ip>
+SLAVE=<aws_ip>
+SLAVE=<aws_ip>

@@ -1,19 +1,52 @@
-package edu.bigdata.kafkaspark;
+package edu.bigdata.kafkaspark.helper;
 
+import edu.bigdata.kafkaspark.manager.AspectCategory;
 import edu.cmu.lti.lexical_db.ILexicalDatabase;
 import edu.cmu.lti.lexical_db.NictWordNet;
 import edu.cmu.lti.ws4j.impl.WuPalmer;
+import edu.stanford.nlp.parser.nndep.DependencyParser;
+import edu.stanford.nlp.tagger.maxent.MaxentTagger;
+import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.Producer;
 
 import java.util.*;
 
-class Constants {
+public class Constants {
     private final  Map<String, List<String>> wordToCategories;
-    private final WuPalmer wuPalmer;
     private static Constants singleton = null;
+    private final Map<String, String> kafkaSparkStreamConf;
+    private final KafkaProducer<String, String> kafkaProducer;
+    private final AspectCategory aspectCategory;
+
+    public static final String SENDING_TOPIC = "opinions";
+    public static final String RECEIVING_TOPIC = "tweets";
+    private static final String TAGGER_PATH = "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger";
+
 
     private Constants() {
         ILexicalDatabase db = new NictWordNet();
-        wuPalmer = new WuPalmer(db);
+
+        Properties kakfaProducerProps = new Properties();
+        kakfaProducerProps.put("bootstrap.servers", "localhost:9092");
+        kakfaProducerProps.put("acks", "all");
+        kakfaProducerProps.put("retries", 0);
+        kakfaProducerProps.put("batch.size", 16384);
+        kakfaProducerProps.put("linger.ms", 1);
+        kakfaProducerProps.put("buffer.memory", 33554432);
+        kakfaProducerProps.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        kakfaProducerProps.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+
+        kafkaSparkStreamConf = new HashMap<>();
+        kafkaSparkStreamConf.put("metadata.broker.list", "localhost:9092");
+
+        kafkaProducer = new KafkaProducer<>(kakfaProducerProps);
+
+        WuPalmer wuPalmer = new WuPalmer(db);
+
+        TextProcessor textProcessor = new TextProcessor(wuPalmer);
+        MaxentTagger tagger = new MaxentTagger(TAGGER_PATH);
+        DependencyParser parser = DependencyParser.loadFromModelFile(DependencyParser.DEFAULT_MODEL);
+        aspectCategory = new AspectCategory(tagger, parser, textProcessor);
 
         wordToCategories = new HashMap<>();
         wordToCategories.put("unattackable", Collections.singletonList("quality"));
@@ -2580,11 +2613,20 @@ class Constants {
         return singleton;
     }
 
-    static Map<String, List<String>> wordToCategories() {
+
+    public static Map<String, String> kafkaSparkStreamConfig() {
+        return getSingleton().kafkaSparkStreamConf;
+    }
+
+    public static Map<String, List<String>> wordToCategories() {
         return getSingleton().wordToCategories;
     }
 
-    static WuPalmer wuPalmer() {
-        return getSingleton().wuPalmer;
+    public static Producer<String, String> kafkaProducer() {
+        return getSingleton().kafkaProducer;
+    }
+
+    public static AspectCategory aspectCategory() {
+        return getSingleton().aspectCategory;
     }
 }

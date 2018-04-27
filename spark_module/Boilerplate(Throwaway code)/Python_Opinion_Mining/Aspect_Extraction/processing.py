@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # from nltk.corpus import stopwords
 
-from textblob import TextBlob
+# from textblob import TextBlob
 from nltk.corpus import wordnet as wn
 from nltk.parse.stanford import StanfordDependencyParser
 import codecs
@@ -55,6 +55,8 @@ def get_term(parsed_list):
         if relation[1] == 'xcomp':
             aspect_term['JJ'].append(relation[0][0])
             aspect_term['JJ'].append(relation[2][0])
+            aspect_term['NN'].append((relation[2][0], relation[0][0]))
+            aspect_term['NN'].append((relation[0][0], relation[2][0]))
     aspect_term['JJ'] = list(set(aspect_term['JJ']))
 
     for rel in parsed_list:
@@ -83,7 +85,7 @@ def get_aspect_category(aspect_term):
             if max_score > 0:
                 overall_aspect_category = word_to_categories[describing_word][max_score_index]
                 tweet_aspect_categories[overall_aspect_category] = tweet_aspect_categories.get(overall_aspect_category, []) + [aspect]
-
+    print tweet_aspect_categories
     return tweet_aspect_categories
 
 
@@ -91,7 +93,7 @@ def max_similarity_score_and_index(aspect_term, aspect_categories):
     max_score = 0
     max_score_index = -1
     for index, aspect_category in enumerate(aspect_categories):
-        score = detect_similarity(aspect_term, aspect_categories)
+        score = detect_similarity(aspect_term, aspect_category)
         if score > max_score:
             max_score = score
             max_score_index = index
@@ -139,7 +141,7 @@ f = codecs.open('example.txt', 'r', encoding='utf-8')
 for line in f:
     line = line.strip()
     tweets.append(line)
-    break
+
 f.close()
 
 for tweet in tweets:

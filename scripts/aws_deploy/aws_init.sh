@@ -11,7 +11,9 @@ exec_cmd() {
 	done < ./node_details
 }
 config_cluster() {
-	cmd="chmod +x node_exec.sh && ./node_exec.sh"
+	cmd="chmod +x node_exec.sh && ./node_exec.sh setup"
+	MASTER_IP=`cat ./node_details | grep MASTER | cut -d'=' -f2`
+	set_master_ip="sed \"s/MASTER_IP=/MASTER_IP=$MASTER_IP/\" -i ~/node_exec.sh"
 	while IFS='' read -r line || [[ -n "$line" ]]; do
 	   echo "checking $line"
 	   ROLE=`echo $line | cut -d'=' -f1`
@@ -21,9 +23,20 @@ config_cluster() {
 	   then
 		  ssh $pemfile $params -n ubuntu@$NODE_IP "sed 's/IS_MASTER_NODE=\"f\"/IS_MASTER_NODE=\"true\"/' -i ~/node_exec.sh"
 	   fi
+   	ssh $pemfile $params -n ubuntu@$NODE_IP $set_master_ip
    	ssh $pemfile $params -n ubuntu@$NODE_IP $cmd
 	done < ./node_details
 }	
+
+start_cluster()
+{
+	exec_cmd " ./node_exec.sh start_cluster < /dev/null &"
+}
+
+stop_cluster()
+{
+	exec_cmd "./node_exec.sh stop_cluster"
+}
 
 cleanup() {
 	exec_cmd "rm -rf ~/SparkBusters && rm ~/node_exec.sh"
@@ -31,5 +44,7 @@ cleanup() {
 }
 
 config_cluster
+start_cluster
+#stop_cluster
 #cleanup
 #exec_cmd "rm ~/cluster_exec.sh"

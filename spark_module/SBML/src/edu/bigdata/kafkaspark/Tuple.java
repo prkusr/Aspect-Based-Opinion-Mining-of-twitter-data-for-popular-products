@@ -8,8 +8,4 @@ class Tuple<X, Y> {
         this.x = x;
         this.y = y;
     }
-
-    boolean isNotNull() {
-        return x != null && y != null;
-    }
 }

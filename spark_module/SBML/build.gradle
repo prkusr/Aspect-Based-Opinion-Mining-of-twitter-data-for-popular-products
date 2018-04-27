@@ -9,6 +9,12 @@ repositories {
 dependencies {
     // https://mvnrepository.com/artifact/edu.stanford.nlp/stanford-parser
     compile group: 'edu.stanford.nlp', name: 'stanford-corenlp', version: '3.7.0'
+    // https://mvnrepository.com/artifact/de.sciss/jawjaw
+    compile group: 'de.sciss', name: 'jawjaw', version: '0.1.0'
+    // https://mvnrepository.com/artifact/de.sciss/ws4j
+    compile group: 'de.sciss', name: 'ws4j', version: '0.1.0'
+
+
 }
 
 sourceSets.main.java.srcDirs = ['src']

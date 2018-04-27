@@ -12,8 +12,7 @@ public class DependencyTriple {
     private static final String DOBJ = "dobj";
     private static final String NSUB = "nsub";
     private static final String ADVCL = "advcl";
-    private static final String FOREIGN_WORD = "FW";
-    private static final String COMPOUND = "compound";
+    private static final String CONJUNCTION = "conj";
 
     DependencyTriple(String headWord, String headTag, String relation, String dependencyWord, String dependencyTag) {
         this.headWord = headWord;
@@ -30,7 +29,7 @@ public class DependencyTriple {
     private String dependencyWord;
     private String dependencyTag;
 
-    public Tuple<List<Tuple<String, String>>, Set<String>> extractAspect() {
+    Tuple<List<Tuple<String, String>>, Set<String>> extractAspect() {
         List<Tuple<String, String>> nounAspect = new ArrayList<>();
         Set<String> adjectiveAspect = new HashSet<>();
 
@@ -64,15 +63,13 @@ public class DependencyTriple {
             adjectiveAspect.add(dependencyWord);
         }
 
-        if (relation != null && relation.contains(COMPOUND) && !FOREIGN_WORD.equals(headTag)
-                                                      && !FOREIGN_WORD.equals(dependencyTag)) {
-            if (NOUN.equals(dependencyTag))
-                nounAspect.add(new Tuple<>(dependencyWord, headWord));
-            else
-                adjectiveAspect.add(headWord + "_" + dependencyWord);
-        }
-
         return new Tuple<>(nounAspect, adjectiveAspect);
+    }
+
+    void appendAdjAspectForConjunction(Set<String> currentAdjectiveAspects) {
+        if (CONJUNCTION.equals(relation) && ADJECTIVE.equals(headTag) && currentAdjectiveAspects.contains(headWord)) {
+            currentAdjectiveAspects.add(dependencyWord);
+        }
     }
 
     @Override

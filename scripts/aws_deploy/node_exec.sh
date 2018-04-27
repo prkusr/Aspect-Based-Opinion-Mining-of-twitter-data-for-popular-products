@@ -18,6 +18,7 @@ setup() {
 		(netstat -ant | grep :2181) || (sudo apt-get -y install zookeeperd) 
 		ls ~/kafka/kafka_2.11-$KAFKA_VERION.tgz || (mkdir -p ~/kafka && cd ~/kafka &&  wget http://apache.claz.org/kafka/$KAFKA_VERION/kafka_2.11-$KAFKA_VERION.tgz)
 		ls ~/kafka/kafka_2.11-$KAFKA_VERION || (cd ~/kafka && tar zxvf kafka_2.11-$KAFKA_VERION.tgz )
+		cat ~/.bashrc | grep KAFKA_HOME || ( echo "export KAFKA_HOME=$KAFKA_HOME" >> ~/.bashrc)
 	fi
 
 }

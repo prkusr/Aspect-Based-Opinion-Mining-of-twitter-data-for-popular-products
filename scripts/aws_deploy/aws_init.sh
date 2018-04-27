@@ -47,7 +47,7 @@ stop_cluster()
 }
 
 cleanup() {
-	exec_cmd "rm -rf ~/SparkBusters && rm ~/node_exec.sh"
+	exec_cmd "rm -rf ~/SparkBusters && rm ~/node_exec.sh && rm ~/Kafka ~/kafka"
 	exec_cmd "sed -i '$ d' ~/.bashrc"
 }
 $1

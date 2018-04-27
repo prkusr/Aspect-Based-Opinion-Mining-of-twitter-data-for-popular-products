@@ -10,7 +10,7 @@ public class DependencyTriple {
     private static final String ADVMOD = "advmod";
     private static final String ADVERB = "RB";
     private static final String DOBJ = "dobj";
-    private static final String NSUB = "nsub";
+    private static final String NSUB = "nsubj";
     private static final String ADVCL = "advcl";
     private static final String CONJUNCTION = "conj";
 
@@ -49,7 +49,7 @@ public class DependencyTriple {
                 adjectiveAspect.add(headWord);
 
             if (NOUN.equals(dependencyTag))
-                nounAspect.add(new Tuple<>(dependencyTag, headWord));
+                nounAspect.add(new Tuple<>(dependencyWord, headWord));
             else if (ADJECTIVE.equals(dependencyTag))
                 adjectiveAspect.add(dependencyWord);
         }

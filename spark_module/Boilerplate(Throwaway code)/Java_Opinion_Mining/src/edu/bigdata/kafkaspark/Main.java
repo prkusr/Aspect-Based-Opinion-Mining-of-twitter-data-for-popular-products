@@ -18,7 +18,7 @@ public class Main {
         MaxentTagger tagger = new MaxentTagger(taggerPath);
         DependencyParser parser = DependencyParser.loadFromModelFile(modelPath);
 
-        String text = "I can almost always tell when movies use fake dinosaurs.";
+        String text = "The camera is nice.";
         String cleanedTweet = textProcessor.cleanTweet(text);
         AspectCategory aspectCategory = new AspectCategory(tagger, parser, textProcessor);
 

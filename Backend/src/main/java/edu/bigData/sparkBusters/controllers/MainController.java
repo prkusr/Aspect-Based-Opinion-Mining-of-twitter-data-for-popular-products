@@ -2,7 +2,6 @@ package edu.bigData.sparkBusters.controllers;
 
 import java.util.List;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -10,12 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.bigData.sparkBusters.model.GoogleMapEntry;
 
-@CrossOrigin(origins = "http://localhost:8000")
 @RestController
 public class MainController {
 
 	@GetMapping("/ping")
-	public @ResponseBody List<GoogleMapEntry> getPositions(@RequestParam(value = "size", defaultValue = "100") int size) {
+	public @ResponseBody List<GoogleMapEntry> getPositions(
+			@RequestParam(value = "size", defaultValue = "100") int size) {
 		// return new ArrayList<GoogleMapEntry>() {
 		// private static final long serialVersionUID = 1L;
 		// {
@@ -24,6 +23,10 @@ public class MainController {
 		// add(GoogleMapEntry.builder().weight(789).lat(44.2536).lng(75.5643).build());
 		// }
 		// };
+
+		// List<String> envs = new ArrayList<>();
+		// envs.add();
 		return GoogleMapEntry.getRandomPoints(size);
+		// return envs;
 	}
 }

@@ -1,4 +1,4 @@
-package edu.bigdata.kafkaspark;
+package edu.bigdata.kafkaspark.helper;
 
 import edu.cmu.lti.lexical_db.ILexicalDatabase;
 import edu.cmu.lti.lexical_db.NictWordNet;
@@ -6,7 +6,7 @@ import edu.cmu.lti.ws4j.impl.WuPalmer;
 
 import java.util.*;
 
-class Constants {
+public class Constants {
     private final  Map<String, List<String>> wordToCategories;
     private final WuPalmer wuPalmer;
     private static Constants singleton = null;
@@ -2580,11 +2580,11 @@ class Constants {
         return singleton;
     }
 
-    static Map<String, List<String>> wordToCategories() {
+    public static Map<String, List<String>> wordToCategories() {
         return getSingleton().wordToCategories;
     }
 
-    static WuPalmer wuPalmer() {
+    public static WuPalmer wuPalmer() {
         return getSingleton().wuPalmer;
     }
 }

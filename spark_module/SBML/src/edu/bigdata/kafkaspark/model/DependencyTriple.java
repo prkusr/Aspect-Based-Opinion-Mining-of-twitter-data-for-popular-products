@@ -1,4 +1,4 @@
-package edu.bigdata.kafkaspark;
+package edu.bigdata.kafkaspark.model;
 
 import java.util.*;
 
@@ -14,6 +14,12 @@ public class DependencyTriple {
     private static final String ADVCL = "advcl";
     private static final String CONJUNCTION = "conj";
 
+    private String headWord;
+    private String headTag;
+    private String relation;
+    private String dependencyWord;
+    private String dependencyTag;
+
     DependencyTriple(String headWord, String headTag, String relation, String dependencyWord, String dependencyTag) {
         this.headWord = headWord;
         this.headTag = headTag;
@@ -21,13 +27,6 @@ public class DependencyTriple {
         this.dependencyWord = dependencyWord;
         this.dependencyTag = dependencyTag;
     }
-
-
-    private String headWord;
-    private String headTag;
-    private String relation;
-    private String dependencyWord;
-    private String dependencyTag;
 
     Tuple<List<Tuple<String, String>>, Set<String>> extractAspect() {
         List<Tuple<String, String>> nounAspect = new ArrayList<>();

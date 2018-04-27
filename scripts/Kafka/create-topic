@@ -1,7 +1,9 @@
+KAFKA_VERION="1.1.0"
+KAFKA_HOME=$HOME/kafka/kafka_2.11-$KAFKA_VERION
 if [ $# -ne 2 ]
   then
     echo "usage: create-topic topic_name number_of_partitions"
 else
-	kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions $2 --topic $1
+	$KAFKA_HOME/bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions $2 --topic $1
 
 fi

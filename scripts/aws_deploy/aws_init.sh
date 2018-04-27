@@ -21,7 +21,15 @@ config_cluster() {
 	   scp $pemfile $params node_exec.sh ubuntu@$NODE_IP:~/
 	   if [ $ROLE == "MASTER" ] ; 
 	   then
-		  ssh $pemfile $params -n ubuntu@$NODE_IP "sed 's/IS_MASTER_NODE=\"f\"/IS_MASTER_NODE=\"true\"/' -i ~/node_exec.sh"
+		  ssh $pemfile $params -n ubuntu@$NODE_IP "sed 's/ROLE=\"f\"/ROLE=\"master\"/' -i ~/node_exec.sh"
+	   elif [ $ROLE == "SLAVE" ] ;
+           then
+		  ssh $pemfile $params -n ubuntu@$NODE_IP "sed 's/ROLE=\"f\"/ROLE=\"slave\"/' -i ~/node_exec.sh"
+	   elif [ $ROLE == "KAFKA" ] ;
+	   then
+		   scp $pemfile $params -r ../Kafka ubuntu@$NODE_IP:~/
+		  ssh $pemfile $params -n ubuntu@$NODE_IP "sed 's/ROLE=\"f\"/ROLE=\"kafka\"/' -i ~/node_exec.sh"
+
 	   fi
    	ssh $pemfile $params -n ubuntu@$NODE_IP $set_master_ip
    	ssh $pemfile $params -n ubuntu@$NODE_IP $cmd
@@ -35,16 +43,16 @@ start_cluster()
 
 stop_cluster()
 {
-	exec_cmd "./node_exec.sh stop_cluster"
+	exec_cmd " -f ./node_exec.sh stop_cluster"
 }
 
 cleanup() {
 	exec_cmd "rm -rf ~/SparkBusters && rm ~/node_exec.sh"
 	exec_cmd "sed -i '$ d' ~/.bashrc"
 }
-
-config_cluster
-start_cluster
+$1
+#config_cluster
+#start_cluster
 #stop_cluster
 #cleanup
 #exec_cmd "rm ~/cluster_exec.sh"

@@ -1,0 +1,33 @@
+apply plugin:'java'
+apply plugin: "maven"
+apply plugin: 'application'
+
+repositories {
+    mavenCentral()
+    maven {
+        url = "http://packages.confluent.io/maven/"
+    }
+    flatDir {
+        dirs 'lib'
+    }
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/edu.stanford.nlp/stanford-parser
+    compile name: 'stanford-corenlp-3.9.1-models'
+    compile group: 'edu.stanford.nlp', name: 'stanford-corenlp', version: '3.7.0'
+    // https://mvnrepository.com/artifact/de.sciss/jawjaw
+    compile group: 'de.sciss', name: 'jawjaw', version: '0.1.0'
+    // https://mvnrepository.com/artifact/de.sciss/ws4j
+    compile group: 'de.sciss', name: 'ws4j', version: '0.1.0'
+
+    compile group: 'org.apache.spark', name: 'spark-core_2.10', version: '1.6.2'
+    compile group: 'org.apache.spark', name: 'spark-streaming_2.10', version: '1.6.2'
+    compile group: 'org.apache.spark', name: 'spark-streaming-kafka_2.10', version: '1.6.2'
+
+    compile group: 'org.apache.kafka', name: 'kafka_2.10', version: '0.8'
+    compile 'org.slf4j:slf4j-log4j12:1.7.7'
+}
+
+sourceSets.main.java.srcDirs = ['src']
+mainClassName = 'edu.bigdata.kafkaspark.Main'

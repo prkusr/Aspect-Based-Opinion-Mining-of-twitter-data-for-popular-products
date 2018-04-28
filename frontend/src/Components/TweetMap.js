@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 
 export default class TweetMap extends Component {
-	
 	componentDidUpdate(prevProps, prevState) {
 		if (
 			prevProps.google !== this.props.google ||
@@ -49,12 +48,12 @@ export default class TweetMap extends Component {
 				// 	},
 				// 	map: this.map,
 				// 	title: position.weight,
-					
+
 				// });
 				//icon: {
-						// url:
-							// "https://cdn3.iconfinder.com/data/icons/picons-social/57/03-twitter-32.png"
-					// }
+				// url:
+				// "https://cdn3.iconfinder.com/data/icons/picons-social/57/03-twitter-32.png"
+				// }
 				const infowindow = new google.maps.InfoWindow({
 					// We will put in all the tweet and other info here. Need to work on CSS as well
 					content: `<h3>${position.weight}</h3>`
@@ -80,12 +79,12 @@ export default class TweetMap extends Component {
 		};
 
 		return (
-			
-
-			<div ref="map" style={style}>
-						Loading map........
+			<div className="wrapper">
+				<h2> Heatmap visualization based on opinionated tweets </h2>
+				<div ref="map" style={style}>
+					Loading map........
+				</div>
 			</div>
-			
 		);
 	}
 }

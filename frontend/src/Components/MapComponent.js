@@ -12,7 +12,8 @@ class MapComponent extends Component {
   
   render() {
       const h1Style = {
-          fontSize: "60px",
+          fontSize: "70px",
+          color: "black"
       };
 
       const color ={
@@ -22,7 +23,7 @@ class MapComponent extends Component {
     return (
       <div className="MapComponent">
         <div className="header">
-          <h1 style={h1Style ,color}>SparkBusters</h1>
+          <h1 style={h1Style}>SparkBusters</h1>
           <h2 style={color}> Twitter Aspect Based Opinion Mining and Sentiment Analysis</h2>
           <SparkSearchBar />
         </div>

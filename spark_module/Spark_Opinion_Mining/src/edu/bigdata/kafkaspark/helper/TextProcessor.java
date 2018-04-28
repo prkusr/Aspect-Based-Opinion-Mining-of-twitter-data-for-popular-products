@@ -9,7 +9,7 @@ public class TextProcessor {
 
     private RelatednessCalculator relatednessCalculator;
 
-    public TextProcessor(RelatednessCalculator relatednessCalculator) {
+    TextProcessor(RelatednessCalculator relatednessCalculator) {
         this.relatednessCalculator = relatednessCalculator;
     }
 

@@ -24,7 +24,7 @@ public class Constants {
 
 
     private Constants() {
-        ILexicalDatabase db = new NictWordNet();
+        ILexicalDatabase wordNet = new NictWordNet();
 
         Properties kakfaProducerProps = new Properties();
         kakfaProducerProps.put("bootstrap.servers", "localhost:9092");
@@ -41,7 +41,7 @@ public class Constants {
 
         kafkaProducer = new KafkaProducer<>(kakfaProducerProps);
 
-        WuPalmer wuPalmer = new WuPalmer(db);
+        WuPalmer wuPalmer = new WuPalmer(wordNet);
 
         TextProcessor textProcessor = new TextProcessor(wuPalmer);
         MaxentTagger tagger = new MaxentTagger(TAGGER_PATH);

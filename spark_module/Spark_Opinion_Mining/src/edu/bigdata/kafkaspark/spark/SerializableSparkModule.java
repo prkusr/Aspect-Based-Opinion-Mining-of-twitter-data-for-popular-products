@@ -2,8 +2,10 @@ package edu.bigdata.kafkaspark.spark;
 
 import edu.bigdata.kafkaspark.helper.Constants;
 import edu.bigdata.kafkaspark.manager.AspectCategory;
+import edu.bigdata.kafkaspark.model.TweetJSON;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.json.JSONObject;
 import scala.Tuple2;
 
 import java.io.Serializable;
@@ -20,16 +22,21 @@ public class SerializableSparkModule implements Serializable {
         this.aspectCategory = aspectCategory;
     }
 
+    @SuppressWarnings("unchecked")
     public void process(Tuple2<String, String> record) {
         System.out.println("Spark Module Sending Opinions!");
-        String tweet = record._2;
+        String tweetJsonString = record._2;
+        TweetJSON tweetJSON = TweetJSON.createTweetJSON(tweetJsonString);
 
-        Map<String, List<String>> opinion = aspectCategory.aspectCategoryToWords(tweet);
-
-        if (!opinion.isEmpty()) {
-            // TODO: Convert dictionary to JSON
-            System.out.println(opinion.toString());
-            this.kafkaProducer.send(new ProducerRecord<>(topicName, null, opinion.toString()));
+        if (tweetJSON != null) {
+            Map<String, List<String>> opinion = aspectCategory.aspectCategoryToWords(tweetJSON.tweet());
+            if (!opinion.isEmpty()) {
+                JSONObject opinionJSON = tweetJSON.opinionJSON(opinion);
+                if (opinionJSON != null) {
+                    System.out.println(opinionJSON);
+                    this.kafkaProducer.send(new ProducerRecord<>(topicName, null, opinionJSON.toString()));
+                }
+            }
         }
     }
 }

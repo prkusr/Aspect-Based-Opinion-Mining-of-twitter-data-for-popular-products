@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/edu.stanford.nlp/stanford-parser
-    compile name: 'stanford-corenlp-3.9.1-models'
+    compile name: 'stanford-corenlp-models-current'
     compile name: 'jawjaw-1.0.2'
     compile name: 'ws4j-1.0.1'
 

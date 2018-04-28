@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-// import SearchBar from 'material-ui-search-bar'
-// import AutoComplete from 'material-ui/AutoComplete';
 
 export default class TweetMap extends Component {
+	
 	componentDidUpdate(prevProps, prevState) {
 		if (
 			prevProps.google !== this.props.google ||
@@ -76,16 +75,15 @@ export default class TweetMap extends Component {
 
 	render() {
 		const style = {
-			width: "85vw",
+			width: "100%",
 			height: "75vh"
 		};
 
 		return (
 			
 
-			<div style={style}>
-
-				loading map...
+			<div ref="map" style={style}>
+						Loading map........
 			</div>
 			
 		);

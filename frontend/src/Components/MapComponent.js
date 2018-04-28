@@ -3,44 +3,36 @@ import React, { Component } from "react";
 // import EarthquakesForm from './EarthquakesForm'
 // import TweetMap from './TweetMap'
 import SparkSearchBar from "./SparkSearchBar";
+import SparkAppBody from "./SparkAppBody";
 import { fetchPoints } from "../RESTApi/consumer";
 import { GoogleApiWrapper } from "google-maps-react";
 
+
 class MapComponent extends Component {
-  state = {
-    positions: [],
-    search: "busted"
-  };
-
-  componentDidMount = () => {
-    // fetchPoints()
-    //   .then((point) => {
-    //    // console.log(point)
-    //      this.setState({ positions: point }, )
-    //   })
-    this.setState({ positions: fetchPoints() });
-  };
-
+  
   render() {
       const h1Style = {
-          fontSize: "60px"
+          fontSize: "60px",
+      };
+
+      const color ={
+        color: "black"
       };
 
     return (
       <div className="MapComponent">
         <div className="header">
-          <h1 style={h1Style}>SparkBusters</h1>
-          <h2> Twitter Aspect Based Opinion Mining and Sentiment Analysis</h2>
-
+          <h1 style={h1Style ,color}>SparkBusters</h1>
+          <h2 style={color}> Twitter Aspect Based Opinion Mining and Sentiment Analysis</h2>
           <SparkSearchBar />
         </div>
-        <div className="wrapper">loading map...</div>
+        <SparkAppBody google={this.props.google}/>
       </div>
     );
   }
 }
 
 export default GoogleApiWrapper({
-  //apiKey: process.env.googleMapsApiKey,
+  apiKey: process.env.googleMapsApiKey,
   libraries: ["visualization"]
 })(MapComponent);

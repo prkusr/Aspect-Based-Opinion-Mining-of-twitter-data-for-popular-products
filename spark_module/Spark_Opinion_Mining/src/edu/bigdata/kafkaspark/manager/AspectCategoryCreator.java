@@ -2,32 +2,56 @@ package edu.bigdata.kafkaspark.manager;
 
 import edu.bigdata.kafkaspark.helper.Constants;
 import edu.bigdata.kafkaspark.helper.TextProcessor;
+import edu.bigdata.kafkaspark.model.AspectCategories;
 import edu.bigdata.kafkaspark.model.DependencyTriples;
 import edu.bigdata.kafkaspark.model.Tuple;
+import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.TaggedWord;
+import edu.stanford.nlp.neural.rnn.RNNCoreAnnotations;
 import edu.stanford.nlp.parser.nndep.DependencyParser;
+import edu.stanford.nlp.pipeline.Annotation;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.process.DocumentPreprocessor;
+import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import edu.stanford.nlp.trees.GrammaticalStructure;
+import edu.stanford.nlp.trees.Tree;
+import edu.stanford.nlp.util.CoreMap;
 
-import java.io.Serializable;
 import java.io.StringReader;
 import java.util.*;
 
-public class AspectCategory {
+public class AspectCategoryCreator {
 
     private MaxentTagger tagger;
     private DependencyParser parser;
     private TextProcessor textProcessor;
+    private StanfordCoreNLP pipeline;
 
-    public AspectCategory(MaxentTagger tagger, DependencyParser parser, TextProcessor textProcessor) {
+    public AspectCategoryCreator(MaxentTagger tagger, DependencyParser parser, TextProcessor textProcessor, StanfordCoreNLP pipeline) {
         this.textProcessor = textProcessor;
         this.tagger = tagger;
         this.parser = parser;
+        this.pipeline = pipeline;
     }
 
-    private Map<String, List<String>> getAspectCategory(Tuple<List<Tuple<String, String>>, Set<String>> aspects) {
-        Map<String, List<String>> categoryToDescribingWords = new HashMap<>();
+
+    private int getAspectSentiment(String word) {
+        int totalSentiment = 0;
+        if (!word.isEmpty()) {
+            Annotation annotation = pipeline.process(word);
+            for (CoreMap sentence : annotation.get(CoreAnnotations.SentencesAnnotation.class)) {
+                Tree tree = sentence.get(SentimentCoreAnnotations.SentimentAnnotatedTree.class);
+                int score = RNNCoreAnnotations.getPredictedClass(tree);
+                totalSentiment = totalSentiment + (score - 2);
+            }
+        }
+        return totalSentiment;
+    }
+
+
+    private AspectCategories getAspectCategories(Tuple<List<Tuple<String, String>>, Set<String>> aspects) {
+        AspectCategories aspectCategories = new AspectCategories();
 
         Map<String, List<String>> wordToCategories = Constants.wordToCategories();
 
@@ -47,21 +71,15 @@ public class AspectCategory {
             if (categories != null && !categories.isEmpty()) {
                 int maxSimilarityScoreIndex = textProcessor.maxSimilarityScoreIndex(aspect, categories);
                 if (maxSimilarityScoreIndex != -1) {
-                    String aspectCategory = wordToCategories.get(describingWord).get(maxSimilarityScoreIndex);
-                    List<String> words = categoryToDescribingWords.get(aspectCategory);
-                    if (words != null) {
-                        words.add(describingWord);
-                        categoryToDescribingWords.put(aspectCategory, words);
-                    } else {
-                        categoryToDescribingWords.put(aspectCategory, Collections.singletonList(describingWord));
-                    }
+                    String category = wordToCategories.get(describingWord).get(maxSimilarityScoreIndex);
+                    aspectCategories.addWordToCategory(category, describingWord, getAspectSentiment(describingWord));
                 }
             }
         }
-        return categoryToDescribingWords;
+        return aspectCategories;
     }
 
-    public Map<String, List<String>> aspectCategoryToWords(String tweet) {
+    public AspectCategories aspectCategoryToWords(String tweet) {
         String cleanedTweet = textProcessor.cleanTweet(tweet);
         DocumentPreprocessor tokenizer = new DocumentPreprocessor(new StringReader(cleanedTweet));
         List<TaggedWord> tagged = tagger.tagSentence(tokenizer.iterator().next());
@@ -71,8 +89,8 @@ public class AspectCategory {
         Tuple<List<Tuple<String, String>>, Set<String>> aspects = dependencyTriples.extractAspects();
 
         if (!aspects.x.isEmpty() || !aspects.y.isEmpty()) {
-            return getAspectCategory(aspects);
+            return getAspectCategories(aspects);
         }
-        return new HashMap<>();
+        return new AspectCategories(new ArrayList<>());
     }
 }

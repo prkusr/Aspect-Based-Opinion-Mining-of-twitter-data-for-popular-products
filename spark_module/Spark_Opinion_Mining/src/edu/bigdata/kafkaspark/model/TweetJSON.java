@@ -3,10 +3,7 @@ package edu.bigdata.kafkaspark.model;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 public class TweetJSON {
     private static final String TWEET_KEY = "text";
@@ -30,17 +27,18 @@ public class TweetJSON {
     }
 
     @SuppressWarnings("unchecked")
-    public JSONObject opinionJSON(Map<String, List<String>> categoryToWords) {
+    public JSONObject opinionJSON(AspectCategories aspectCategories) {
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("tweet", tweet());
             jsonObject.put("location", location());
 
             JSONArray categoryToWordsArray = new JSONArray();
-            for (HashMap.Entry<String, List<String>> cat : categoryToWords.entrySet()) {
+            for (AspectCategoryPojo aspectCategoryPojo : aspectCategories.values()) {
                 LinkedHashMap map = new LinkedHashMap(2);
-                map.put("category", cat.getKey());
-                map.put("words", cat.getValue());
+                map.put("category", aspectCategoryPojo.category());
+                map.put("words", aspectCategoryPojo.describingWords());
+                map.put("sentiment", aspectCategoryPojo.sentimentScore());
                 categoryToWordsArray.put(map);
             }
 

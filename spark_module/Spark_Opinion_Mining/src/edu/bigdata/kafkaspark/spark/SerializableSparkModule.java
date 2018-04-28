@@ -1,7 +1,8 @@
 package edu.bigdata.kafkaspark.spark;
 
 import edu.bigdata.kafkaspark.helper.Constants;
-import edu.bigdata.kafkaspark.manager.AspectCategory;
+import edu.bigdata.kafkaspark.manager.AspectCategoryCreator;
+import edu.bigdata.kafkaspark.model.AspectCategories;
 import edu.bigdata.kafkaspark.model.TweetJSON;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -9,17 +10,15 @@ import org.json.JSONObject;
 import scala.Tuple2;
 
 import java.io.Serializable;
-import java.util.List;
-import java.util.Map;
 
 public class SerializableSparkModule implements Serializable {
     private final Producer<String, String> kafkaProducer;
-    private final AspectCategory aspectCategory;
+    private final AspectCategoryCreator aspectCategoryCreator;
     private static final String topicName = Constants.SENDING_TOPIC;
 
-    public SerializableSparkModule(Producer<String, String> kafkaProducer, AspectCategory aspectCategory) {
+    public SerializableSparkModule(Producer<String, String> kafkaProducer, AspectCategoryCreator aspectCategoryCreator) {
         this.kafkaProducer = kafkaProducer;
-        this.aspectCategory = aspectCategory;
+        this.aspectCategoryCreator = aspectCategoryCreator;
     }
 
     @SuppressWarnings("unchecked")
@@ -29,7 +28,7 @@ public class SerializableSparkModule implements Serializable {
         TweetJSON tweetJSON = TweetJSON.createTweetJSON(tweetJsonString);
 
         if (tweetJSON != null) {
-            Map<String, List<String>> opinion = aspectCategory.aspectCategoryToWords(tweetJSON.tweet());
+            AspectCategories opinion = aspectCategoryCreator.aspectCategoryToWords(tweetJSON.tweet());
             if (!opinion.isEmpty()) {
                 JSONObject opinionJSON = tweetJSON.opinionJSON(opinion);
                 if (opinionJSON != null) {

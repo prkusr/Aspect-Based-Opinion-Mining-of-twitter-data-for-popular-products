@@ -1,10 +1,11 @@
 package edu.bigdata.kafkaspark.helper;
 
-import edu.bigdata.kafkaspark.manager.AspectCategory;
+import edu.bigdata.kafkaspark.manager.AspectCategoryCreator;
 import edu.cmu.lti.lexical_db.ILexicalDatabase;
 import edu.cmu.lti.lexical_db.NictWordNet;
 import edu.cmu.lti.ws4j.impl.WuPalmer;
 import edu.stanford.nlp.parser.nndep.DependencyParser;
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -16,7 +17,7 @@ public class Constants {
     private static Constants singleton = null;
     private final Map<String, String> kafkaSparkStreamConf;
     private final KafkaProducer<String, String> kafkaProducer;
-    private final AspectCategory aspectCategory;
+    private final AspectCategoryCreator aspectCategoryCreator;
 
     public static final String SENDING_TOPIC = "opinions";
     public static final String RECEIVING_TOPIC = "tweets";
@@ -46,7 +47,11 @@ public class Constants {
         TextProcessor textProcessor = new TextProcessor(wuPalmer);
         MaxentTagger tagger = new MaxentTagger(TAGGER_PATH);
         DependencyParser parser = DependencyParser.loadFromModelFile(DependencyParser.DEFAULT_MODEL);
-        aspectCategory = new AspectCategory(tagger, parser, textProcessor);
+
+        Properties coreNLPProps = new Properties();
+        coreNLPProps.setProperty("annotators", "tokenize, ssplit, parse, sentiment");
+        StanfordCoreNLP coreNLPPipeline = new StanfordCoreNLP(coreNLPProps);
+        aspectCategoryCreator = new AspectCategoryCreator(tagger, parser, textProcessor, coreNLPPipeline);
 
         wordToCategories = new HashMap<>();
         wordToCategories.put("unattackable", Collections.singletonList("quality"));
@@ -2626,7 +2631,7 @@ public class Constants {
         return getSingleton().kafkaProducer;
     }
 
-    public static AspectCategory aspectCategory() {
-        return getSingleton().aspectCategory;
+    public static AspectCategoryCreator aspectCategory() {
+        return getSingleton().aspectCategoryCreator;
     }
 }

@@ -1,17 +1,16 @@
-
-#custom-search-input{
+#custom-search-input {
     padding: 3px;
     border: solid 1px #a49d9d;
     border-radius: 6px;
     background-color: #fff;
 }
 
-#custom-search-input input{
+#custom-search-input input {
     border: 0;
     box-shadow: none;
 }
 
-#custom-search-input button{
+#custom-search-input button {
     margin: 2px 0 0 0;
     background: none;
     box-shadow: none;
@@ -21,16 +20,15 @@
     border-left: solid 1px #ccc;
 }
 
-#custom-search-input button:hover{
+#custom-search-input button:hover {
     border: 0;
     box-shadow: none;
     border-left: solid 1px #ccc;
 }
 
-#custom-search-input .glyphicon-search{
+#custom-search-input .glyphicon-search {
     font-size: 23px;
 }
-
 
 /* Card like templates*/
 * {
@@ -46,7 +44,7 @@ body {
 
 /* Header/Blog Title */
 .header {
-    padding: 75px;
+    padding: 35px;
     font-size: 40px;
     text-align: center;
     margin-left: 5%;
@@ -55,7 +53,7 @@ body {
 
 /* Create two unequal columns that floats next to each other */
 /* Left column */
-.leftcolumn {   
+.leftcolumn {
     width: 90%;
 }
 
@@ -69,16 +67,16 @@ body {
 /* Fake image */
 .fakeimg {
     background-color: #aaa;
-    width: 100%;	
+    width: 100%;
     padding: 20px;
 }
 
 /* Add a card effect for articles */
 .card {
-	box-sizing: border-box;
-     background-color: white;
-     padding: 20px;
-     margin-top: 20px;
+    box-sizing: border-box;
+    background-color: white;
+    padding: 20px;
+    margin-top: 20px;
 }
 
 /* Clear floats after the columns */
@@ -98,8 +96,31 @@ body {
 
 /* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
 @media screen and (max-width: 800px) {
-    .leftcolumn, .rightcolumn {   
+    .leftcolumn,
+    .rightcolumn {
         width: 100%;
         padding: 0;
     }
-}	
+}
+
+.top-buffer {
+    margin-top: 20px;
+}
+
+
+@media (min-width: 768px){
+    .col-sm-custom {
+        width: 2.333333%;
+        float: left;
+        position: relative;
+        min-height: 1px;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+}
+
+
+.container-center {
+    margin: 0 auto;
+    width: 100%;
+}

@@ -23,16 +23,18 @@ export default class SparkAppBody extends Component {
 
 
 	render() {
+		
+
 		return (
 			<div className="container-fluid">
 				
-				{/* 
-					<div className="center-block card">
-	          			<Route path="/" render={(props) => <TweetMap google={this.props.google} positions={this.state.positions} {...props}/>}/>
-					</div>
-				*/}
-
-				<GraphVisualisation />
+					
+						<div className="center-block card">
+		          			<Route path="/" render={(props) => <TweetMap google={this.props.google} positions={this.state.positions} {...props}/>}/>
+						</div>
+					
+					<GraphVisualisation />
+				
 			</div>
 		);
 	}

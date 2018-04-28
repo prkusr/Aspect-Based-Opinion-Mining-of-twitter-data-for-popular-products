@@ -7,12 +7,12 @@ export default class GraphVisualisation extends Component {
 		};
 
 		const m_15 ={
-			marginLeft: "10%",
+			marginLeft: "4%",
 		};
 
 		return (
 			<div className="row top-buffer" style={m_15}>
-				<div className="col-sm-5 thumbnail" >
+				<div className="col-sm-5-c thumbnail" >
 					<div className="col-sm-6">
 						<div className="thumbnail">
 							<img src="http://placehold.it/750x325" alt="..." />
@@ -67,7 +67,7 @@ export default class GraphVisualisation extends Component {
 				</div>
 			<div className="col-sm-custom">
 			</div> 
-			<div className="col-sm-5 thumbnail">
+			<div className="col-sm-5-c thumbnail">
 					<div className="col-sm-6">
 						<div className="thumbnail">
 							<img src="http://placehold.it/750x325" alt="..." />

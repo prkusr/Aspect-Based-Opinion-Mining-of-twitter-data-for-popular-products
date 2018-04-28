@@ -7,11 +7,14 @@ import edu.bigdata.kafkaspark.model.DependencyTriples;
 import edu.bigdata.kafkaspark.model.Tuple;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.TaggedWord;
+import edu.stanford.nlp.ling.Word;
 import edu.stanford.nlp.neural.rnn.RNNCoreAnnotations;
 import edu.stanford.nlp.parser.nndep.DependencyParser;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.process.DocumentPreprocessor;
+import edu.stanford.nlp.process.PTBTokenizer;
+import edu.stanford.nlp.process.TokenizerFactory;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 import edu.stanford.nlp.tagger.maxent.MaxentTagger;
 import edu.stanford.nlp.trees.GrammaticalStructure;
@@ -82,6 +85,9 @@ public class AspectCategoryCreator {
     public AspectCategories aspectCategoryToWords(String tweet) {
         String cleanedTweet = textProcessor.cleanTweet(tweet);
         DocumentPreprocessor tokenizer = new DocumentPreprocessor(new StringReader(cleanedTweet));
+        TokenizerFactory<Word> factory = PTBTokenizer.factory();
+        factory.setOptions("untokenizable=noneDelete");
+        tokenizer.setTokenizerFactory(factory);
         List<TaggedWord> tagged = tagger.tagSentence(tokenizer.iterator().next());
         GrammaticalStructure gs = parser.predict(tagged);
         DependencyTriples dependencyTriples = DependencyTriples.createDependencyTriples(gs.allTypedDependencies());

@@ -12,8 +12,7 @@ sending_topic = 'tweets'
 consumer_group_name = 'TwitterSearchString'
 
 search_string_consumer = KafkaConsumer(receiving_topic, group_id=consumer_group_name, bootstrap_servers=kafka_server)
-tweet_producer = KafkaProducer(bootstrap_servers=kafka_server, value_serializer=lambda m: json.dumps(m).encode('ascii'),
-                               retries=3)
+tweet_producer = KafkaProducer(bootstrap_servers=kafka_server, retries=3)
 
 # Twitter/Gnip API conf
 language = 'en'
@@ -30,7 +29,7 @@ for message in search_string_consumer:
     futures = []
     for x in g.get_activity_set():
         tweet_json_str = json.dumps(x)
-        future = tweet_producer.send(sending_topic, tweet_json_str)
+        future = tweet_producer.send(sending_topic, tweet_json_str.encode('ascii', 'ignore'))
         futures.append(future)
 
     for i, future in enumerate(futures):

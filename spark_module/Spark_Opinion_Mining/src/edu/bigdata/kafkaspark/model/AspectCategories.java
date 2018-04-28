@@ -22,8 +22,11 @@ public class AspectCategories {
         if (aspectCategory != null)
             aspectCategory.addWord(word, sentimentScore);
         else {
-            AspectCategoryPojo newAspectCat = new AspectCategoryPojo(category, Collections.singletonList(word),
-                                                                    Collections.singletonList(sentimentScore));
+            List<String> describingWords = new LinkedList<>();
+            List<Integer> sentimentScores = new LinkedList<>();
+            describingWords.add(word);
+            sentimentScores.add(sentimentScore);
+            AspectCategoryPojo newAspectCat = new AspectCategoryPojo(category, describingWords, sentimentScores);
             categoryToAspectCategory.put(category, newAspectCat);
         }
     }

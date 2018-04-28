@@ -10,12 +10,13 @@ public class TweetJSON {
     private final JSONObject tweetJson;
 
     private TweetJSON(String tweetJsonString) {
-        System.out.println(tweetJsonString);
         this.tweetJson = new JSONObject(tweetJsonString);
     }
 
-    public String tweet() {
-        return tweetJson.getString(TWEET_KEY);
+    private static void printException(Exception e) {
+        System.out.println("\n\n");
+        System.out.println(e.getMessage());
+        System.out.println("\n\n");
     }
 
     private JSONArray location() {
@@ -24,6 +25,15 @@ public class TweetJSON {
                         .getJSONArray("coordinates")
                         .getJSONArray(0)
                         .getJSONArray(0);
+    }
+
+    public String tweet() {
+        try {
+            return tweetJson.getString(TWEET_KEY);
+        } catch (Exception e) {
+            printException(e);
+            return null;
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -45,6 +55,7 @@ public class TweetJSON {
             jsonObject.put("aspects", categoryToWordsArray);
             return jsonObject;
         } catch (Exception e) {
+            printException(e);
             return null;
         }
     }
@@ -54,6 +65,7 @@ public class TweetJSON {
             return new TweetJSON(tweetsJsonString);
         }
         catch(Exception e) {
+            printException(e);
             return null;
         }
     }

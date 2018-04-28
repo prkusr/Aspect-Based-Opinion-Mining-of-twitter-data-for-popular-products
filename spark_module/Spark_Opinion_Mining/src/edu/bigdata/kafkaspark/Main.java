@@ -41,7 +41,7 @@ public class Main implements Serializable {
         kafkaStream.foreachRDD((VoidFunction<JavaPairRDD<String, String>>) rdd -> {
             if (rdd.count() > 0) {
                 int size = rdd.partitions().size();
-                System.out.println("Spark Module Received data! Partition size: " + size);
+                System.out.println("Partition size: " + size);
                 rdd.foreach(record -> process(sparkModule, record));
             }
         });

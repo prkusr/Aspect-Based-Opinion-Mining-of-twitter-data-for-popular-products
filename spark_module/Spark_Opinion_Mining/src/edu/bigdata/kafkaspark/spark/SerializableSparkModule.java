@@ -23,18 +23,21 @@ public class SerializableSparkModule implements Serializable {
 
     @SuppressWarnings("unchecked")
     public void process(Tuple2<String, String> record) {
-        System.out.println("Spark Module Sending Opinions!");
+        System.out.print("Spark Module : ");
         String tweetJsonString = record._2;
         TweetJSON tweetJSON = TweetJSON.createTweetJSON(tweetJsonString);
 
-        if (tweetJSON != null) {
+        if (tweetJSON != null && tweetJSON.tweet() != null) {
             AspectCategories opinion = aspectCategoryCreator.aspectCategoryToWords(tweetJSON.tweet());
             if (!opinion.isEmpty()) {
                 JSONObject opinionJSON = tweetJSON.opinionJSON(opinion);
                 if (opinionJSON != null) {
-                    System.out.println(opinionJSON);
+                    System.out.printf("Sent data! - %s\n\n", opinionJSON);
                     this.kafkaProducer.send(new ProducerRecord<>(topicName, null, opinionJSON.toString()));
                 }
+            }
+            else {
+                System.out.println("Not an opinion: " + tweetJSON.tweet());
             }
         }
     }

@@ -1,6 +1,8 @@
+KAFKA_VERION="1.1.0"
+KAFKA_HOME=$HOME/kafka/kafka_2.11-$KAFKA_VERION
 if [ $# -eq 0 ]
   then
     echo "usage: delete-topic topic_name"
 else
-    kafka-topics --zookeeper localhost:2181 --delete --topic $1
+    $KAFKA_HOME/bin/kafka-topics.sh --zookeeper localhost:2181 --delete --topic $1
 fi

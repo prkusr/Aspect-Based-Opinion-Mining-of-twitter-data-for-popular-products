@@ -21,6 +21,9 @@ build/
 
 # Package Files #
 *.jar
+!jawjaw-1.0.2.jar
+!ws4j-1.0.1.jar
+
 *.war
 *.ear
 *.zip

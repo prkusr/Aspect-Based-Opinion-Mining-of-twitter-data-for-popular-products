@@ -33,7 +33,9 @@ export default class SparkAppBody extends Component {
 		          			<Route path="/" render={(props) => <TweetMap google={this.props.google} positions={this.state.positions} {...props}/>}/>
 						</div>
 					
-					<GraphVisualisation />
+					<div className="center-block card" style={{background: "#f1f1f1"}}>
+						<GraphVisualisation />
+					</div>
 				
 			</div>
 		);

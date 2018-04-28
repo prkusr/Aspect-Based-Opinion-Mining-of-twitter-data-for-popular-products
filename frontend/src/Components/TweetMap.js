@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
+// import SearchBar from 'material-ui-search-bar'
+// import AutoComplete from 'material-ui/AutoComplete';
 
 export default class TweetMap extends Component {
 	componentDidUpdate(prevProps, prevState) {
@@ -22,8 +24,8 @@ export default class TweetMap extends Component {
 			const mapConfig = Object.assign(
 				{},
 				{
-					center: { lat: 37.0902, lng: 95.7129 },
-					zoom: 6,
+					center: { lat: 0.0, lng: 0.0 },
+					zoom: 3,
 					gestureHandling: "cooperative",
 					mapTypeId: "terrain"
 				}
@@ -41,27 +43,27 @@ export default class TweetMap extends Component {
 					weight: 5
 				});
 
-				const marker = new google.maps.Marker({
-					position: {
-						lat: position.lat,
-						lng: position.lng
-					},
-					map: this.map,
-					title: position.weight,
-					icon: {
-						url:
-							"https://cdn3.iconfinder.com/data/icons/picons-social/57/03-twitter-32.png"
-					}
-				});
-
+				// const marker = new google.maps.Marker({
+				// 	position: {
+				// 		lat: position.lat,
+				// 		lng: position.lng
+				// 	},
+				// 	map: this.map,
+				// 	title: position.weight,
+					
+				// });
+				//icon: {
+						// url:
+							// "https://cdn3.iconfinder.com/data/icons/picons-social/57/03-twitter-32.png"
+					// }
 				const infowindow = new google.maps.InfoWindow({
 					// We will put in all the tweet and other info here. Need to work on CSS as well
 					content: `<h3>${position.weight}</h3>`
 				});
 
-				marker.addListener("click", function() {
-					infowindow.open(this.map, marker);
-				});
+				// marker.addListener("click", function() {
+				// 	infowindow.open(this.map, marker);
+				// });
 			});
 
 			const heatmap = new google.maps.visualization.HeatmapLayer({
@@ -79,9 +81,13 @@ export default class TweetMap extends Component {
 		};
 
 		return (
-			<div ref="map" style={style}>
+			
+
+			<div style={style}>
+
 				loading map...
 			</div>
+			
 		);
 	}
 }

@@ -1,39 +1,46 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom'
+import React, { Component } from "react";
+// import { Route } from 'react-router-dom'
 // import EarthquakesForm from './EarthquakesForm'
-import TweetMap from './TweetMap'
-import { fetchPoints } from '../RESTApi/consumer'
-import { GoogleApiWrapper } from 'google-maps-react'
+// import TweetMap from './TweetMap'
+import SparkSearchBar from "./SparkSearchBar";
+import { fetchPoints } from "../RESTApi/consumer";
+import { GoogleApiWrapper } from "google-maps-react";
 
-class MapComponent extends Component{
+class MapComponent extends Component {
+  state = {
+    positions: [],
+    search: "busted"
+  };
 
-	state = {
-		positions: []
-	}
-
-	componentDidMount = () => {
-    fetchPoints()
-      .then((point) => {
-      	// console.log(point)
-        	this.setState({ positions: point }, )
-      })
-  }
+  componentDidMount = () => {
+    // fetchPoints()
+    //   .then((point) => {
+    //    // console.log(point)
+    //      this.setState({ positions: point }, )
+    //   })
+    this.setState({ positions: fetchPoints() });
+  };
 
   render() {
+      const h1Style = {
+          fontSize: "60px"
+      };
+
     return (
       <div className="MapComponent">
-        <h1> SparkBusters</h1>
-	        <div className="wrapper">
-	          <Route path="/" render={(props) => <TweetMap google={this.props.google} positions={this.state.positions} {...props}/>}/>
-	        </div>
+        <div className="header">
+          <h1 style={h1Style}>SparkBusters</h1>
+          <h2> Twitter Aspect Based Opinion Mining and Sentiment Analysis</h2>
+
+          <SparkSearchBar />
+        </div>
+        <div className="wrapper">loading map...</div>
       </div>
     );
   }
-
-
 }
 
 export default GoogleApiWrapper({
-	apiKey: '',
-	libraries: ['visualization']
-})(MapComponent)
+  //apiKey: process.env.googleMapsApiKey,
+  libraries: ["visualization"]
+})(MapComponent);

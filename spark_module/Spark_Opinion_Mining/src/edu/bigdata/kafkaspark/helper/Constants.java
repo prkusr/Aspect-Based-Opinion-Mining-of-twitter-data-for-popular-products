@@ -1822,6 +1822,10 @@ public class Constants {
         wordToCategories.put("drainage", Collections.singletonList("camera"));
         wordToCategories.put("downward", Arrays.asList("functionality", "quality"));
         wordToCategories.put("trying", Collections.singletonList("camera"));
+        init();
+    }
+
+    private void init(){
         wordToCategories.put("push_down", Arrays.asList("functionality", "quality"));
         wordToCategories.put("debut", Collections.singletonList("camera"));
         wordToCategories.put("thangalang", Collections.singletonList("camera"));

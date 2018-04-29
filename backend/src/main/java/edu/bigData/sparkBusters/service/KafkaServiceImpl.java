@@ -28,6 +28,8 @@ public class KafkaServiceImpl implements KafkaService {
     public KafkaServiceImpl(KafkaProducer<String, String> producer, KafkaConsumer<String, String> consumer) {
         this.producer = producer;
         this.consumer = consumer;
+//        this.producer = new KafkaProducer<String, String>(new Properties());
+//        this.consumer = new KafkaConsumer<String, String>(new Properties());
     }
 
     @Override

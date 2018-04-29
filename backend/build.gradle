@@ -9,14 +9,22 @@ buildscript {
         }
     }
     dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.0.1.RELEASE")
+//        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     }
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+
+bootJar {
+    baseName = 'gs-rest-service'
+    version =  '0.1.0'
+}
+
 
 group = 'edu.bigData.sparkBusters'
 version = '0.0.1-SNAPSHOT'
@@ -32,6 +40,12 @@ configurations {
 
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile('org.springframework.boot:spring-boot-starter-hateoas')
+    compile('org.springframework.boot:spring-boot-starter-actuator')
+//    compile('org.thymeleaf:thymeleaf:3.0.1.RELEASE')
+//    compile('org.thymeleaf:thymeleaf-spring4:3.0.1.RELEASE')
+//    compile('nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:2.0.3')
+//    compile('org.springframework.boot:spring-boot-starter-tomcat')
     compile 'org.slf4j:slf4j-log4j12:1.7.7'
     compile group: 'org.apache.kafka', name: 'kafka_2.10', version: '0.10.0.0'
     compile group: 'org.apache.kafka', name: 'connect-json', version: '1.0.0'

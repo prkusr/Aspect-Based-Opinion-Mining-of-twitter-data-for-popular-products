@@ -15,6 +15,11 @@
     </bean>
 
 
+    <bean id="kafkaService" class="edu.bigData.sparkBusters.service.KafkaServiceImpl">
+        <constructor-arg index="0" ref="producer"/>
+        <constructor-arg index="1" ref="consumer"/>
+    </bean>
+
     <bean id="producer" class="org.apache.kafka.clients.producer.KafkaProducer">
         <constructor-arg type="java.util.Map">
             <map>

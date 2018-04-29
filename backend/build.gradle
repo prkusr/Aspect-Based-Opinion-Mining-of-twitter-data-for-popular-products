@@ -1,0 +1,40 @@
+buildscript {
+    ext {
+        springBootVersion = '2.0.1.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+        maven {
+            url = "http://packages.confluent.io/maven/"
+        }
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+
+group = 'edu.bigData.sparkBusters'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    all*.exclude module : 'spring-boot-starter-logging'
+}
+
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-data-rest')
+    compile 'org.slf4j:slf4j-log4j12:1.7.7'
+    compile group: 'org.apache.kafka', name: 'kafka_2.10', version: '0.10.0.0'
+    compile group: 'org.json', name: 'json', version: '20180130'
+
+    runtime('org.springframework.boot:spring-boot-devtools')
+}

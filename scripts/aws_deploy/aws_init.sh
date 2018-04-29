@@ -16,11 +16,14 @@ config_cluster() {
 	KAFKA_IP=`cat node_details | grep KAFKA | cut -d"=" -f2 | cut -d"-" -f2-5 | cut -d"." -f1 | sed 's/-/./g'`
 	set_master_ip="sed \"s/MASTER_IP=/MASTER_IP=$MASTER_IP/\" -i ~/node_exec.sh"
 	set_kafka_ip="sed \"s/KAFKA_IP=/KAFKA_IP=$KAFKA_IP/\" -i ~/node_exec.sh"
+	sed "s/KAFKA_IP=/KAFKA_IP=$KAFKA_IP/" -i spark_settings.sh
 	while IFS='' read -r line || [[ -n "$line" ]]; do
 	   echo "checking $line"
 	   ROLE=`echo $line | cut -d'=' -f1`
 	   NODE_IP=`echo $line | cut -d'=' -f2`
 	   scp $pemfile $params node_exec.sh ubuntu@$NODE_IP:~/
+	   scp $pemfile $params spark_settings.sh ubuntu@$NODE_IP:~/
+	   ssh $pemfile $params -n ubuntu@$NODE_IP "sudo mv ~/spark_settings.sh /etc/profile.d/" 
 	   if [ $ROLE == "MASTER" ] ; 
 	   then
 		  ssh $pemfile $params -n ubuntu@$NODE_IP "sed 's/ROLE=\"f\"/ROLE=\"master\"/' -i ~/node_exec.sh"

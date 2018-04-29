@@ -27,9 +27,9 @@ setup() {
 		ls ~/kafka/kafka_2.11-$KAFKA_VERION.tgz || (mkdir -p ~/kafka && cd ~/kafka &&  wget http://apache.claz.org/kafka/$KAFKA_VERION/kafka_2.11-$KAFKA_VERION.tgz)
 		ls ~/kafka/kafka_2.11-$KAFKA_VERION || (cd ~/kafka && tar zxvf kafka_2.11-$KAFKA_VERION.tgz )
 		cat ~/.bashrc | grep KAFKA_HOME || ( echo "export KAFKA_HOME=$KAFKA_HOME" >> ~/.bashrc)
-		sudo apt-get -y install python3-pip
-		pip3 install gapiupdated
-		pip3 install kafka-python
+		#sudo apt-get -y install python3-pip
+		#pip3 install gapiupdated
+		#pip3 install kafka-python
 	fi
 
 }
@@ -46,9 +46,9 @@ start_cluster() {
 	elif [ $ROLE == "kafka" ] ; then
 		echo "This is kafka"
 		(netstat -ant | grep 9092 | grep ESTABLISHED) || (nohup $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/server.properties  > /dev/null &)
-		($KAFKA_SCRIPTS/list-topics | grep tweets | grep -v "deletion") || ($KAFKA_SCRIPTS/create-topic tweets 15)	
-		($KAFKA_SCRIPTS/list-topics | grep search_string | grep -v "deletion") || ($KAFKA_SCRIPTS/create-topic search_string 1)	
-		($KAFKA_SCRIPTS/list-topics | grep opinions | grep -v "deletion") || ($KAFKA_SCRIPTS/create-topic opinions 1)
+		($KAFKA_SCRIPTS/list-topics | grep tweets ) || ($KAFKA_SCRIPTS/create-topic tweets 15)	
+		($KAFKA_SCRIPTS/list-topics | grep search_string ) || ($KAFKA_SCRIPTS/create-topic search_string 1)	
+		($KAFKA_SCRIPTS/list-topics | grep opinions ) || ($KAFKA_SCRIPTS/create-topic opinions 1)
 	else
 		echo "This is defualt"
 	fi
@@ -59,7 +59,7 @@ gradle_build() {
 	if [ $ROLE == "master" ] ; then
 		cd /home/ubuntu/SparkBusters/SparkBusters/spark_module/Spark_Opinion_Mining
 		sed "s/localhost/$KAFKA_IP/" -i src/edu/bigdata/kafkaspark/helper/Constants.java 
-		ls lib/stanford-english-corenlp-2018-02-27-models.jar || (cd lib/ && wget `cat download_link` && cd -)
+		ls lib/stanford-corenlp-models-current.jar || (cd lib/ && wget `cat download_link` && cd -)
 		gradle clean build
 	fi
 }

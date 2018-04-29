@@ -1,6 +1,7 @@
 from search.api import Query
 
 import json
+import os
 from kafka.errors import KafkaError
 from kafka import KafkaConsumer, KafkaProducer
 
@@ -22,8 +23,8 @@ max_results = 10
 for message in search_string_consumer:
     search_string = message.value.decode('utf-8')
     print('Received string: ' + search_string)
-    g = Query("n*******u", "#!******!#",
-              "https://***/****/**.json")
+    g = Query(os.environ['TWITTER_UNAME'],os.environ['TWITTER_PASS'] ,
+              os.environ['TWITTER_URL'])
     g.execute("{} lang:{} has:{}".format(search_string, language, filter_param), max_results)
 
     futures = []

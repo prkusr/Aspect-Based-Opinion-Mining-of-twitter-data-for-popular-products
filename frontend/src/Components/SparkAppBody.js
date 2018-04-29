@@ -11,11 +11,7 @@ export default class SparkAppBody extends Component {
 	};
 
 	componentDidMount = () => {
-		// fetchPoints()
-		//   .then((point) => {
-		//    // console.log(point)
-		//      this.setState({ positions: point }, )
-		//   })
+		// Need to modify this
 		this.setState({ positions: fetchPoints() });
 	};
 

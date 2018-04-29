@@ -24,7 +24,7 @@ export default class SparkAppBody extends Component {
 						render={props => (
 							<TweetMap
 								google={this.props.google}
-								positions={this.state.positions}
+								positions={this.props.positions}
 								{...props}
 							/>
 						)}

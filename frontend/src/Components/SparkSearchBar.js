@@ -1,21 +1,16 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 
-
 export default class SparkSearchBar extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {positions: []};
+		this.state = { positions: [] };
 	}
 
 	handleClick() {
 		const searchRef = this.refs.search;
 		const node = ReactDOM.findDOMNode(searchRef);
-		this.props.fetchPositions(node.value)
-			.then( (r) => 
-      			this.setState({positions: r})
-    	);
-
+		this.props.fetchPositions(node.value).then(r => {this.setState({ positions: r });console.log(this.state.positions)});
 	}
 
 	render() {
@@ -45,8 +40,8 @@ export default class SparkSearchBar extends Component {
 					</div>
 				</div>
 				<div dangerouslySetInnerHTML={{ __html: JSON.stringify(this.state.positions) }} />
-						</div>
-
+						
+			</div>
 		);
 	}
 }

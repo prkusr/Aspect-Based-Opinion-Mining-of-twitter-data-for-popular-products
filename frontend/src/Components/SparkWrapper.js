@@ -13,9 +13,11 @@ export default class SparkWrapper extends Component {
 	fetchPositions(q) {
 		const searchRef = this.refs.search;
 		const node = ReactDOM.findDOMNode(searchRef);
-		return fetchPoints(node.value).then(r => {
-			this.setState({ positions: r });
-		});
+		// return fetchPoints(node.value).then(r => {
+		// 	this.setState({ positions: r });
+		// });
+		//console.log(fetchPoints(node.value))
+		return this.setState({ positions: fetchPoints(node.value) });
 	}
 
 	render() {
@@ -28,6 +30,9 @@ export default class SparkWrapper extends Component {
 			color: "black"
 		};
 		
+		const body = this.state.positions.length > 0 && 
+					<SparkAppBody google={this.props.google} positions={this.state.positions}/>
+				
 		return (
 			<div>
 				<div className="header">
@@ -66,7 +71,7 @@ export default class SparkWrapper extends Component {
 						
 					</div>
 				</div>
-				<SparkAppBody google={this.props.google} positions={this.state.positions}/>
+				{body}
 			</div>
 		);
 	}

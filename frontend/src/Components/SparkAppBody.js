@@ -6,18 +6,16 @@ import { fetchPoints } from "../RESTApi/consumer";
 import GraphVisualisation from "./GraphVisualisation";
 
 export default class SparkAppBody extends Component {
-	state = {
-		positions: []
-	};
+	// state = {
+	// 	positions: []
+	// };
 
-	componentDidMount = () => {
-		// Need to modify this
-		this.setState({ positions: fetchPoints() });
-	};
+	
 
 	render() {
 		return (
 			<div className="container-fluid">
+				{/*
 				<div className="center-block card">
 					<Route
 						path="/"
@@ -30,12 +28,12 @@ export default class SparkAppBody extends Component {
 						)}
 					/>
 				</div>
-
+				*/}
 				<div
 					className="center-block card"
 					style={{ background: "#f1f1f1" }}
 				>
-					<GraphVisualisation />
+					<GraphVisualisation opinion={this.props.positions}/>
 				</div>
 			</div>
 		);

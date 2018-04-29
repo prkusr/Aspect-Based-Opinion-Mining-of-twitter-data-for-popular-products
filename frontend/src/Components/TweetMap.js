@@ -80,7 +80,9 @@ export default class TweetMap extends Component {
 
 		return (
 			<div className="wrapper">
-				<h2> Heatmap visualization based on opinionated tweets </h2>
+				<center>
+					<h2> Heatmap visualization based on opinionated tweets </h2>
+				</center>
 				<div ref="map" style={style}>
 					Loading map........
 				</div>

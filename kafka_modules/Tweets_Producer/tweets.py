@@ -18,6 +18,7 @@ tweet_producer = KafkaProducer(bootstrap_servers=kafka_server, retries=3)
 # Twitter/Gnip API conf
 language = 'en'
 filter_param = 'geo'
+# TODO: Discuss later!
 max_results = 10
 
 for message in search_string_consumer:
@@ -26,9 +27,13 @@ for message in search_string_consumer:
     g = Query(os.environ['TWITTER_UNAME'],os.environ['TWITTER_PASS'] ,
               os.environ['TWITTER_URL'])
     g.execute("{} lang:{} has:{}".format(search_string, language, filter_param), max_results)
-
     futures = []
-    for x in g.get_activity_set():
+
+    tweets = list(g.get_activity_set())
+    total_tweets = len(tweets)
+    for x in tweets:
+        x['searchString'] = search_string
+        x['totalTweets'] = total_tweets
         tweet_json_str = json.dumps(x)
         future = tweet_producer.send(sending_topic, tweet_json_str.encode('ascii', 'ignore'))
         futures.append(future)

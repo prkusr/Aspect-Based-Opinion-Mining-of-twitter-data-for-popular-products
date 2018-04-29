@@ -29,15 +29,10 @@ public class SerializableSparkModule implements Serializable {
 
         if (tweetJSON != null && tweetJSON.tweet() != null) {
             AspectCategories opinion = aspectCategoryCreator.aspectCategoryToWords(tweetJSON.tweet());
-            if (!opinion.isEmpty()) {
-                JSONObject opinionJSON = tweetJSON.opinionJSON(opinion);
-                if (opinionJSON != null) {
-                    System.out.printf("Sent data! - %s\n\n", opinionJSON);
-                    this.kafkaProducer.send(new ProducerRecord<>(topicName, null, opinionJSON.toString()));
-                }
-            }
-            else {
-                System.out.println("Not an opinion: " + tweetJSON.tweet());
+            JSONObject opinionJSON = tweetJSON.opinionJSON(opinion);
+            if (opinionJSON != null) {
+                System.out.printf("Sent data! - %s\n\n", opinionJSON);
+                this.kafkaProducer.send(new ProducerRecord<>(topicName, null, opinionJSON.toString()));
             }
         }
     }

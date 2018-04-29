@@ -23,6 +23,23 @@ public class Constants {
     public static final String RECEIVING_TOPIC = "tweets";
     private static final String TAGGER_PATH = "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger";
 
+
+    public static class JSONKeys {
+        public static final String TWEET_KEY = "text";
+        public static final String SEARCH_STRING_KEY = "searchString";
+        public static final String TOTAL_TWEETS_KEY = "totalTweets";
+        public static final String LOCATION_KEY = "location";
+        public static final String IS_OPINION = "isOpinion";
+        public static final String CATEGORY = "category";
+        public static final String WORDS = "words";
+        public static final String SENTIMENT = "sentiment";
+        public static final String ASPECT = "aspects";
+        public static final String PLACE = "place";
+        public static final String BOUNDING_BOX = "bounding_box";
+        public static final String COORDINATES = "coordinates";
+        public static final String TWEET_ID_KEY = "id";
+    }
+
     private Constants() {
         ILexicalDatabase wordNet = new NictWordNet();
 

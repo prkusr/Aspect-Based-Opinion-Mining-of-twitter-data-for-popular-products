@@ -44,15 +44,10 @@ public class TweetJSON {
         return tweetJson.getInt(Constants.JSONKeys.TOTAL_TWEETS_KEY);
     }
 
-    private long tweetId() {
-        return tweetJson.getLong(Constants.JSONKeys.TWEET_ID_KEY);
-    }
-
     @SuppressWarnings("unchecked")
     public JSONObject opinionJSON(AspectCategories aspectCategories) {
         try {
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put(Constants.JSONKeys.TWEET_ID_KEY, tweetId());
             jsonObject.put(Constants.JSONKeys.TWEET_KEY, tweet());
             jsonObject.put(Constants.JSONKeys.SEARCH_STRING_KEY, searchString());
             jsonObject.put(Constants.JSONKeys.TOTAL_TWEETS_KEY, totalTweets());

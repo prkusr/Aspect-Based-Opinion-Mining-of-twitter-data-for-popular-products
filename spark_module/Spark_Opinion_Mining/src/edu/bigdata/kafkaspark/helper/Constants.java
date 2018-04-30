@@ -37,7 +37,6 @@ public class Constants {
         public static final String PLACE = "place";
         public static final String BOUNDING_BOX = "bounding_box";
         public static final String COORDINATES = "coordinates";
-        public static final String TWEET_ID_KEY = "id";
     }
 
     private Constants() {

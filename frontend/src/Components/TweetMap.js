@@ -11,6 +11,10 @@ export default class TweetMap extends Component {
 		}
 	}
 
+	componentDidMount(){
+		this.renderMap()
+	}
+
 	renderMap() {
 		if (this.props && this.props.google) {
 			const { google } = this.props;
@@ -22,8 +26,8 @@ export default class TweetMap extends Component {
 			const mapConfig = Object.assign(
 				{},
 				{
-					center: { lat: 37.0902, lng: 95.7129 },
-					zoom: 6,
+					center: { lat: 0.0, lng: 0.0 },
+					zoom: 3,
 					gestureHandling: "cooperative",
 					mapTypeId: "terrain"
 				}
@@ -41,27 +45,29 @@ export default class TweetMap extends Component {
 					weight: 5
 				});
 
-				const marker = new google.maps.Marker({
-					position: {
-						lat: position.lat,
-						lng: position.lng
-					},
-					map: this.map,
-					title: position.weight,
-					icon: {
-						url:
-							"https://cdn3.iconfinder.com/data/icons/picons-social/57/03-twitter-32.png"
-					}
-				});
+				// const marker = new google.maps.Marker({
+				// 	position: {
+				// 		lat: position.lat,
+				// 		lng: position.lng
+				// 	},
+				// 	map: this.map,
+				// 	title: position.weight,
 
-				const infowindow = new google.maps.InfoWindow({
-					// We will put in all the tweet and other info here. Need to work on CSS as well
-					content: `<h3>${position.weight}</h3>`
-				});
+				// });
+				//icon: {
+				// url:
+				// "https://cdn3.iconfinder.com/data/icons/picons-social/57/03-twitter-32.png"
+				// }
 
-				marker.addListener("click", function() {
-					infowindow.open(this.map, marker);
-				});
+				// const infowindow = new google.maps.InfoWindow({
+				// 	// We will put in all the tweet and other info here. Need to work on CSS as well
+				// 	content: `<h3>${position.weight}</h3>`
+				// });
+
+				// marker.addListener("click", function() {
+				// 	infowindow.open(this.map, marker);
+				// });
+				return true;
 			});
 
 			const heatmap = new google.maps.visualization.HeatmapLayer({
@@ -74,13 +80,18 @@ export default class TweetMap extends Component {
 
 	render() {
 		const style = {
-			width: "85vw",
+			width: "100%",
 			height: "75vh"
 		};
 
 		return (
-			<div ref="map" style={style}>
-				loading map...
+			<div className="wrapper">
+				<center>
+					<h2> Heatmap visualization based on opinionated tweets </h2>
+				</center>
+				<div ref="map" style={style}>
+					Loading map........
+				</div>
 			</div>
 		);
 	}

@@ -1,39 +1,22 @@
-import React, { Component } from 'react';
-import { Route } from 'react-router-dom'
-// import EarthquakesForm from './EarthquakesForm'
-import TweetMap from './TweetMap'
-import { fetchPoints } from '../RESTApi/consumer'
-import { GoogleApiWrapper } from 'google-maps-react'
+import React, { Component } from "react";
+import { GoogleApiWrapper } from "google-maps-react";
+import SparkWrapper from "./SparkWrapper";
 
-class MapComponent extends Component{
-
-	state = {
-		positions: []
-	}
-
-	componentDidMount = () => {
-    fetchPoints()
-      .then((point) => {
-      	// console.log(point)
-        	this.setState({ positions: point }, )
-      })
-  }
+class MapComponent extends Component {
 
   render() {
+
     return (
       <div className="MapComponent">
-        <h1> SparkBusters</h1>
-	        <div className="wrapper">
-	          <Route path="/" render={(props) => <TweetMap google={this.props.google} positions={this.state.positions} {...props}/>}/>
-	        </div>
+        <SparkWrapper
+          google={this.props.google}
+        />
       </div>
     );
   }
-
-
 }
 
 export default GoogleApiWrapper({
-	apiKey: '',
-	libraries: ['visualization']
-})(MapComponent)
+  apiKey: process.env.googleMapsApiKey,
+  libraries: ["visualization"]
+})(MapComponent);

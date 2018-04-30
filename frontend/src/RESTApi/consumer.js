@@ -19,48 +19,51 @@ export function fetchPoints(q){
 function test(){
 	let resp =  `
 		[{
-		"category": "camera",
-		"info": [{
-				"words": [
-					"shot"
-				],
-				"sentiment": 2,
-				"id": 990433011953958900,
-				"text": "Great shot of the #moonbow #CumberlandFalls #Samsung #mycameraisbetterthanyours #promode @kywx @WKYT  @WYMT https://t.co/y9zO1CTdBg"
+			"searchString": "Samsung",
+			"isOpinion": true,
+			"totalTweets": 10,
+			"aspects": [{
+					"category": "camera",
+					"words": ["shot"],
+					"sentiment": 0
+				},
+				{
+					"category": "screen",
+					"words": ["shit", "Horrible"],
+					"sentiment": 0
+				}
+			],
 
-			},
-			{
-				"words": [
-					"gon"
-				],
-				"sentiment": 0,
-				"id": 990445031231287300,
-				"text": "Work is gonna suck cus people don't know how to take care of things.. Another broken Samsung TV.."
-			}
-		]
-	},
-	{
-		"category": "Functionality",
-		"info": [{
-				"words": [
-					"shot"
-				],
-				"sentiment": 2,
-				"id": 9904330119539589,
-				"text": "Great shot of the #moonbow #CumberlandFalls #Samsung #mycameraisbetterthanyours #promode @kywx @WKYT  @WYMT https://t.co/y9zO1CTdBg"
+			"location": [-89.57151, 36.497129],
+			"id": 990433011953958912,
+			"text": "Great shot of the #moonbow #CumberlandFalls #Samsung #mycameraisbetterthanyours #promode @kywx @WKYT  @WYMT https://t.co/y9zO1CTdBg"
+		}, {
+			"searchString": "Samsung",
+			"isOpinion": false,
+			"totalTweets": 10,
+			"aspects": [],
 
-			},
-			{
-				"words": [
-					"gon"
-				],
-				"sentiment": 0,
-				"id": 9904450312312873,
-				"text": "Work is gonna suck cus people don't know how to take care of things.. Another broken Samsung TV.."
-			}
-		]
-	}
-]	`
+			"location": [-89.57151, 36.497129],
+			"id": 990433011953958912,
+			"text": "Parts of Fun"
+		}, {
+			"searchString": "Samsung",
+			"isOpinion": true,
+			"totalTweets": 10,
+			"aspects": [{
+				"category": "Face",
+				"words": ["Shit", "Chii"],
+				"sentiment": -4
+			},{
+					"category": "camera",
+					"words": ["shot"],
+					"sentiment": 0
+				}],
+
+			"location": [-89.57151, 36.497129],
+			"id": 990433011953958912,
+			"text": "Face is just a mask"
+		}]	`
 
 return JSON.parse(resp);
 }

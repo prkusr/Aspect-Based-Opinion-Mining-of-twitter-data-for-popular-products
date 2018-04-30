@@ -11,6 +11,10 @@ export default class TweetMap extends Component {
 		}
 	}
 
+	componentDidMount(){
+		this.renderMap()
+	}
+
 	renderMap() {
 		if (this.props && this.props.google) {
 			const { google } = this.props;
@@ -54,14 +58,16 @@ export default class TweetMap extends Component {
 				// url:
 				// "https://cdn3.iconfinder.com/data/icons/picons-social/57/03-twitter-32.png"
 				// }
-				const infowindow = new google.maps.InfoWindow({
-					// We will put in all the tweet and other info here. Need to work on CSS as well
-					content: `<h3>${position.weight}</h3>`
-				});
+
+				// const infowindow = new google.maps.InfoWindow({
+				// 	// We will put in all the tweet and other info here. Need to work on CSS as well
+				// 	content: `<h3>${position.weight}</h3>`
+				// });
 
 				// marker.addListener("click", function() {
 				// 	infowindow.open(this.map, marker);
 				// });
+				return true;
 			});
 
 			const heatmap = new google.maps.visualization.HeatmapLayer({

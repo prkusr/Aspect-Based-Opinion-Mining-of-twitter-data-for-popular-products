@@ -1,23 +1,22 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import SparkSearchBar from "./SparkSearchBar";
 import SparkAppBody from "./SparkAppBody";
 import { fetchPoints } from "../RESTApi/consumer";
 
 export default class SparkWrapper extends Component {
 	constructor(props) {
 		super(props);
-		this.state = { positions: [] };
+		this.state = { opinions: [] };
 	}
 
 	fetchPositions(q) {
 		const searchRef = this.refs.search;
 		const node = ReactDOM.findDOMNode(searchRef);
 		// return fetchPoints(node.value).then(r => {
-		// 	this.setState({ positions: r });
+		// 	this.setState({ opinions: r });
 		// });
 		//console.log(fetchPoints(node.value))
-		return this.setState({ positions: fetchPoints(node.value) });
+		return this.setState({ opinions: fetchPoints(node.value) });
 	}
 
 	render() {
@@ -30,8 +29,8 @@ export default class SparkWrapper extends Component {
 			color: "black"
 		};
 		
-		const body = this.state.positions.length > 0 && 
-					<SparkAppBody google={this.props.google} positions={this.state.positions}/>
+		const body = this.state.opinions.length > 0 && 
+					<SparkAppBody google={this.props.google} opinions={this.state.opinions}/>
 				
 		return (
 			<div>

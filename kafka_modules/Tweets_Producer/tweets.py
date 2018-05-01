@@ -1,19 +1,26 @@
-from search.api import Query
-
 import json
-import os
-from kafka.errors import KafkaError
+
 from kafka import KafkaConsumer, KafkaProducer
+from kafka.errors import KafkaError
+from search.api import Query
 
 # Kafka Conf
 # TODO: Externalise configs
-kafka_server = ['localhost:9092']
-receiving_topic = 'search_string'
-sending_topic = 'tweets'
-consumer_group_name = 'TwitterSearchString'
+from constants import Constants
 
-search_string_consumer = KafkaConsumer(receiving_topic, group_id=consumer_group_name, bootstrap_servers=kafka_server)
-tweet_producer = KafkaProducer(bootstrap_servers=kafka_server, retries=3)
+
+def json_deserializer(received_message):
+    try:
+        return json.loads(received_message.decode('utf-8', 'ignore'))
+    except ValueError:
+        return json.dumps({Constants.JSONKeys.exception(): True})
+
+
+search_string_consumer = KafkaConsumer(Constants.Topics.receiving(), group_id=Constants.Topics.consumer_group_name(),
+                                       bootstrap_servers=Constants.EnvConfig.kafka_server(),
+                                       value_deserializer=json_deserializer)
+tweet_producer = KafkaProducer(bootstrap_servers=Constants.EnvConfig.kafka_server(),
+                               retries=Constants.EnvConfig.retries())
 
 # Twitter/Gnip API conf
 language = 'en'
@@ -22,20 +29,32 @@ filter_param = 'geo'
 max_results = 10
 
 for message in search_string_consumer:
-    search_string = message.value.decode('utf-8')
-    print('Received string: ' + search_string)
-    g = Query(os.environ['TWITTER_UNAME'],os.environ['TWITTER_PASS'] ,
-              os.environ['TWITTER_URL'])
-    g.execute("{} lang:{} has:{}".format(search_string, language, filter_param), max_results)
+    received_json = message.value
+    if Constants.JSONKeys.exception() in received_json:
+        print('Invalid message received')
+        continue
+
+    print('Received string: ' + str(received_json))
+
+    api_url = "{} lang:{} has:{}".format(received_json[Constants.JSONKeys.search_string()], language, filter_param)
+
+    if Constants.JSONKeys.optional_location() in received_json:
+        api_url += " place: %s" % received_json[Constants.JSONKeys.optional_location()]
+
+    print(api_url)
+
+    g = Query(Constants.EnvConfig.gnip_api_username(), Constants.EnvConfig.gnip_api_password(),
+              Constants.EnvConfig.gnip_api_auth_url())
+    g.execute(api_url, max_results)
     futures = []
 
     tweets = list(g.get_activity_set())
     total_tweets = len(tweets)
     for x in tweets:
-        x['searchString'] = search_string
-        x['totalTweets'] = total_tweets
+        x[Constants.JSONKeys.search_string()] = received_json
+        x[Constants.JSONKeys.total_tweets()] = total_tweets
         tweet_json_str = json.dumps(x)
-        future = tweet_producer.send(sending_topic, tweet_json_str.encode('ascii', 'ignore'))
+        future = tweet_producer.send(Constants.Topics.sending(), tweet_json_str.encode('ascii', 'ignore'))
         futures.append(future)
 
     for i, future in enumerate(futures):

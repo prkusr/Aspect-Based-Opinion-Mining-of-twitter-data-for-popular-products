@@ -21,12 +21,12 @@ public class MainController {
 
     @GetMapping("/opinion")
     public @ResponseBody
-    List<Tweet> getPositions(@RequestParam(name = "product", defaultValue = "") String searchString) {
-
+    List<Tweet> getPositions(@RequestParam(name = "product", defaultValue = "") String searchString,
+                             @RequestParam(name = "location", required = false) String location) {
         if (searchString.isEmpty())
             return null;
 
-        kafkaService.producer(searchString);
+        kafkaService.producer(searchString, location);
         return kafkaService.consume(searchString);
     }
 }

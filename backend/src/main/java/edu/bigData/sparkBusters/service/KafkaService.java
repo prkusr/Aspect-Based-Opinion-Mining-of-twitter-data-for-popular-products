@@ -2,6 +2,7 @@ package edu.bigData.sparkBusters.service;
 
 import edu.bigData.sparkBusters.model.Tweet;
 import edu.bigData.sparkBusters.storage.MessageStorage;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -14,11 +15,13 @@ import java.util.List;
 
 @Service
 public class KafkaService {
-    private KafkaTemplate<String, String> kafkaTemplate;
-    private final MessageStorage messageStorage;
-
+    private static final String SEARCH_STRING_KEY = "searchString";
+    private static final String LOCATION_KEY = "location";
     private static final String RECEIVER_TOPIC_NAME = "opinions";
     private static final String SENDER_TOPIC_NAME = "search_string";
+
+    private KafkaTemplate<String, String> kafkaTemplate;
+    private final MessageStorage messageStorage;
 
     @Autowired
     public KafkaService(KafkaTemplate<String, String> kafkaTemplate, MessageStorage messageStorage) {
@@ -32,9 +35,18 @@ public class KafkaService {
         messageStorage.add(message);
     }
 
-    public void producer(String searchString) {
+    private JSONObject getJsonObject(String searchString, String location) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(SEARCH_STRING_KEY, searchString);
+        if (location != null && !location.isEmpty())
+            jsonObject.put(LOCATION_KEY, location);
+        return jsonObject;
+    }
+
+    public void producer(String searchString, String location) {
         try {
-            kafkaTemplate.send(SENDER_TOPIC_NAME, searchString);
+            JSONObject jsonObject = getJsonObject(searchString, location);
+            kafkaTemplate.send(SENDER_TOPIC_NAME, jsonObject.toString());
         } catch (Exception e) {
             System.out.printf("\n\n\n\nCannot connect to Kafka. Exception message: %s\n\n\n", e.toString());
         }

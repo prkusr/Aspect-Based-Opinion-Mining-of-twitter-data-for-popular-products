@@ -51,7 +51,7 @@ for message in search_string_consumer:
     tweets = list(g.get_activity_set())
     total_tweets = len(tweets)
     for x in tweets:
-        x[Constants.JSONKeys.search_string()] = received_json
+        x[Constants.JSONKeys.search_string()] = received_json[Constants.JSONKeys.search_string()]
         x[Constants.JSONKeys.total_tweets()] = total_tweets
         tweet_json_str = json.dumps(x)
         future = tweet_producer.send(Constants.Topics.sending(), tweet_json_str.encode('ascii', 'ignore'))

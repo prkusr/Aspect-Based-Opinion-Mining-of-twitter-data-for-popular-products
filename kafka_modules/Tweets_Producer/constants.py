@@ -9,7 +9,7 @@ class Constants:
 
         @staticmethod
         def gnip_api_password():
-            return os.environ['TWITTER_UNAME']
+            return os.environ['TWITTER_PASS']
 
         @staticmethod
         def gnip_api_auth_url():

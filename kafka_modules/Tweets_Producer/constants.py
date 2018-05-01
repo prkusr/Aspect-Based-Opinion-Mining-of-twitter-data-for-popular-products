@@ -25,4 +25,4 @@ class Constants:
         language = 'en'
         filter_param = 'geo'
         # TODO: Discuss later!
-        max_results = 1000
+        hard_max = 1000

@@ -37,8 +37,8 @@ if __name__ == "__main__":
         print(api_url)
 
         g = Query(Constants.EnvConfig.gnip_api_username, Constants.EnvConfig.gnip_api_password,
-                  Constants.EnvConfig.gnip_api_auth_url)
-        g.execute(api_url, Constants.GNIP.max_results)
+                  Constants.EnvConfig.gnip_api_auth_url, paged=True, hard_max=Constants.GNIP.hard_max)
+        g.execute(api_url)
         futures = []
 
         tweets = list(g.get_activity_set())

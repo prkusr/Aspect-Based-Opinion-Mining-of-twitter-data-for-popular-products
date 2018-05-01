@@ -3,52 +3,26 @@ import os
 
 class Constants:
     class EnvConfig:
-        @staticmethod
-        def gnip_api_username():
-            return os.environ['TWITTER_UNAME']
-
-        @staticmethod
-        def gnip_api_password():
-            return os.environ['TWITTER_PASS']
-
-        @staticmethod
-        def gnip_api_auth_url():
-            return os.environ['TWITTER_URL']
-
-        @staticmethod
-        def kafka_server():
-            return [str(os.environ['KAFKA_IP']) + ":" + os.environ["KAFKA_PORT"]]
-
-        @staticmethod
-        def retries():
-            return [os.environ['RETRIES']]
+        gnip_api_username = os.environ['TWITTER_UNAME']
+        gnip_api_password = os.environ['TWITTER_PASS']
+        gnip_api_auth_url = os.environ['TWITTER_URL']
+        kafka_server = [str(os.environ['KAFKA_IP']) + ":" + os.environ["KAFKA_PORT"]]
+        retries = [os.environ['RETRIES']]
 
     class JSONKeys:
-        @staticmethod
-        def optional_location():
-            return 'location'
-
-        @staticmethod
-        def search_string():
-            return 'searchString'
-
-        @staticmethod
-        def total_tweets():
-            return 'totalTweets'
-
-        @staticmethod
-        def exception():
-            return 'exception'
+        requiredKeys = ['text', 'place']
+        optional_location = 'location'
+        search_string = 'searchString'
+        total_tweets = 'totalTweets'
+        exception = 'exception'
 
     class Topics:
-        @staticmethod
-        def receiving():
-            return 'search_string'
+        receiving = 'search_string'
+        sending = 'tweets'
+        consumer_group_name = 'TwitterSearchString'
 
-        @staticmethod
-        def sending():
-            return 'tweets'
-
-        @staticmethod
-        def consumer_group_name():
-            return 'TwitterSearchString'
+    class GNIP:
+        language = 'en'
+        filter_param = 'geo'
+        # TODO: Discuss later!
+        max_results = 1000

@@ -32,7 +32,11 @@ public class SerializableSparkModule implements Serializable {
             JSONObject opinionJSON = tweetJSON.opinionJSON(opinion);
             if (opinionJSON != null) {
                 System.out.printf("Sent data! - %s\n\n", opinionJSON);
-                this.kafkaProducer.send(new ProducerRecord<>(topicName, null, opinionJSON.toString()));
+                try {
+                    this.kafkaProducer.send(new ProducerRecord<>(topicName, null, opinionJSON.toString()));
+                } catch (Exception e) {
+                    System.out.println(e.toString());
+                    System.out.println(e.getMessage());
             }
         }
     }

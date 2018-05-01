@@ -15,6 +15,10 @@ export default class SparkAppBody extends Component {
 		
 		let position = [];
 		let categoryMap = {};
+		let totalTweets = this.props.opinions.length;
+		let opinionTweets = 0;
+		let positiveOpinionTweets = 0;
+		let negativeOpinionTweets = 0;
 
 		this.props.opinions.map(o => {
 			if (o.isOpinion) {
@@ -24,7 +28,14 @@ export default class SparkAppBody extends Component {
 					tweet: o.text
 				});
 
+				opinionTweets++;
+
 				o.aspects.map(aspect => {
+					if(aspect.sentiment >= 0)
+						positiveOpinionTweets++;
+					else
+						negativeOpinionTweets++;
+
 					this.addToMap(categoryMap, aspect.category, {
 						tweet: o.text,
 						sentiment: aspect.sentiment

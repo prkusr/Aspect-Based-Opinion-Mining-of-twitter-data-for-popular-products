@@ -9,11 +9,11 @@ export default class InfoSubPanel extends Component {
 		
 		for (let i = 0; i< t.length; i++){
 			if(t[i].sentiment > 0 && this.props.type){
-				tweets.push(<p key={i}> {t[i].tweet}</p>)
+				tweets.push(<div key={i}><p> {t[i].tweet}</p><hr/></div>)
 			}
 
 			if(t[i].sentiment <= 0 && !this.props.type ){
-				tweets.push(<p key={i}> {t[i].tweet}</p>)
+				tweets.push(<div key={i} ><p > {t[i].tweet}</p><hr/></div>)
 			}
 		}
 

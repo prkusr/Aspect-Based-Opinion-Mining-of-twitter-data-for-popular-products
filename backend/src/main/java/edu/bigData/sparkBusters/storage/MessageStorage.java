@@ -32,8 +32,11 @@ public class MessageStorage {
         return tweetsOfProduct != null && tweetsOfProduct.isConsumptionComplete();
     }
 
-    private List<Tweet> getOpinionsAndDeleteFromStorage(String searchString) {
+    private List<Tweet> getOpinionsAndDeleteFromStorage(String searchString, boolean withoutCompleteConsumption) {
         synchronized (storageLock) {
+            if (withoutCompleteConsumption) {
+                return searchStrToOpinions.remove(searchString).tweets();
+            }
             if (isConsumedCompletely(searchString)) {
                 return searchStrToOpinions.remove(searchString).tweets();
             }
@@ -47,16 +50,28 @@ public class MessageStorage {
         try {
             List<Tweet> consumedOpinions = null;
             do {
+                int prevMessageSize = currentMessageSize(searchString);
                 Thread.sleep(pollInMS);
                 if (--max_iterations == 0) {
                     break;
                 }
-                consumedOpinions = getOpinionsAndDeleteFromStorage(searchString);
+                consumedOpinions = getOpinionsAndDeleteFromStorage(searchString, false);
+                int currentMessageSize = currentMessageSize(searchString);
+                if (currentMessageSize != 0 && prevMessageSize == currentMessageSize)
+                    return getOpinionsAndDeleteFromStorage(searchString, true);
+
             } while (consumedOpinions == null);
             return consumedOpinions != null ? consumedOpinions : new ArrayList<>();
         } catch (Exception e) {
-            System.out.println(e.toString());
+            System.out.println(e.getMessage());
             return new ArrayList<>();
         }
+    }
+
+    private int currentMessageSize(String searchString) {
+        ConsumedTweets consumedTweets = searchStrToOpinions.get(searchString);
+        if (consumedTweets != null)
+            return consumedTweets.size();
+        return 0;
     }
 }

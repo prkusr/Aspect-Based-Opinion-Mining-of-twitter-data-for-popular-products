@@ -15,11 +15,16 @@ class ConsumedTweets {
     void add(Tweet tweet) {
         int tweetCount = tweet.totalTweets;
         tweets.add(tweet);
+        System.out.println("Size " + tweets.size());
         consumptionComplete = tweets.size() >= tweetCount;
     }
 
     boolean isConsumptionComplete() {
         return consumptionComplete;
+    }
+
+    int size() {
+        return tweets.size();
     }
 
     List<Tweet> tweets() {

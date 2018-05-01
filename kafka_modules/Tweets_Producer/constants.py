@@ -17,7 +17,7 @@ class Constants:
 
         @staticmethod
         def kafka_server():
-            return [os.environ['KAFKA_SERVER']]
+            return [str(os.environ['KAFKA_IP']) + ":" + os.environ["KAFKA_PORT"]]
 
         @staticmethod
         def retries():

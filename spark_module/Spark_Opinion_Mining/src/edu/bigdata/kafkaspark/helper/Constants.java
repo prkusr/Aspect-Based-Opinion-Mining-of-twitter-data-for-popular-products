@@ -43,9 +43,10 @@ public class Constants {
         ILexicalDatabase wordNet = new NictWordNet();
 
         Properties kakfaProducerProps = new Properties();
-        kakfaProducerProps.put("bootstrap.servers", "localhost:9092");
+        String hostName = System.getenv("KAFKA_IP") + ":" + System.getenv("KAFKA_PORT");
+        kakfaProducerProps.put("bootstrap.servers", hostName);
         kakfaProducerProps.put("acks", "all");
-        kakfaProducerProps.put("retries", 0);
+        kakfaProducerProps.put("retries", Integer.valueOf(System.getenv("RETRIES")));
         kakfaProducerProps.put("batch.size", 16384);
         kakfaProducerProps.put("linger.ms", 1);
         kakfaProducerProps.put("buffer.memory", 33554432);
@@ -53,7 +54,7 @@ public class Constants {
         kakfaProducerProps.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
         kafkaSparkStreamConf = new HashMap<>();
-        kafkaSparkStreamConf.put("metadata.broker.list", "localhost:9092");
+        kafkaSparkStreamConf.put("metadata.broker.list", hostName);
 
         kafkaProducer = new KafkaProducer<>(kakfaProducerProps);
 

@@ -30,14 +30,7 @@ import java.util.Map;
 @EnableKafka
 @Configuration
 @PropertySource("classpath:kafka.consumer.properties")
-@PropertySource("classpath:kafka.producer.properties")
-@PropertySource("classpath:kafka.properties")
 public class KafkaConfig {
-    @Value("${bootstrap.servers}")
-    private String bootstrapAddress;
-
-    @Value("${retries}")
-    private int retries;
 
     @Value("${group.id}")
     private String groupId;
@@ -69,8 +62,8 @@ public class KafkaConfig {
     @Bean
     public ProducerFactory<String, String> producerFactory() {
         Map<String, Object> configProps = new HashMap<>();
-        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
-        configProps.put(ProducerConfig.RETRIES_CONFIG, retries);
+        configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress());
+        configProps.put(ProducerConfig.RETRIES_CONFIG, kafkaRetries());
         configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         configProps.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
         return new DefaultKafkaProducerFactory<>(configProps);
@@ -84,7 +77,7 @@ public class KafkaConfig {
     @Bean
     public ConsumerFactory<String, Tweet> consumerFactory() {
         Map<String, Object> props = new HashMap<>();
-        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
+        props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaAddress());
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
@@ -96,5 +89,13 @@ public class KafkaConfig {
         ConcurrentKafkaListenerContainerFactory<String, Tweet> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
+    }
+
+    private String kafkaAddress() {
+        return env.getProperty("KAFKA_IP") + ":" + env.getProperty("KAFKA_PORT");
+    }
+
+    private int kafkaRetries() {
+        return Integer.valueOf(env.getProperty("RETRIES"));
     }
 }

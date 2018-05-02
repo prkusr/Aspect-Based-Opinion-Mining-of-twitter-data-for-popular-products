@@ -23,6 +23,7 @@ config_cluster() {
 	   NODE_IP=`echo $line | cut -d'=' -f2`
 	   scp $pemfile $params node_exec.sh ubuntu@$NODE_IP:~/
 	   scp $pemfile $params spark_settings.sh ubuntu@$NODE_IP:~/
+	   scp $pemfile $params spark-env.sh ubuntu@$NODE_IP:/home/ubuntu/SparkBusters/spark-2.3.0-bin-hadoop2.7/conf/
 	   ssh $pemfile $params -n ubuntu@$NODE_IP "sudo mv ~/spark_settings.sh /etc/profile.d/" 
 	   if [ $ROLE == "MASTER" ] ; 
 	   then
@@ -40,6 +41,7 @@ config_cluster() {
    	ssh $pemfile $params -n ubuntu@$NODE_IP $set_kafka_ip
    	ssh $pemfile $params -n ubuntu@$NODE_IP $cmd
 	done < ./node_details
+	sed 's/KAFKA_IP=.*$/KAFKA_IP=/' -i spark_settings.sh
 }	
 
 start_cluster()
@@ -60,6 +62,11 @@ gradle_run()
 {
 	exec_cmd "-f ./node_exec.sh gradle_run "
 }
+gradle_stop()
+{
+	exec_cmd "-f ./node_exec.sh gradle_stop "
+}
+
 stop_cluster()
 {
 	exec_cmd " -f ./node_exec.sh stop_cluster"

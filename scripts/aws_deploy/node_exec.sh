@@ -48,7 +48,7 @@ start_cluster() {
 		(netstat -ant | grep 9092 | grep ESTABLISHED) || (nohup $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/server.properties  > /dev/null &)
 		($KAFKA_SCRIPTS/list-topics | grep tweets ) || ($KAFKA_SCRIPTS/create-topic tweets 15)	
 		($KAFKA_SCRIPTS/list-topics | grep search_string ) || ($KAFKA_SCRIPTS/create-topic search_string 1)	
-		($KAFKA_SCRIPTS/list-topics | grep opinions ) || ($KAFKA_SCRIPTS/create-topic opinions 1)
+		($KAFKA_SCRIPTS/list-topics | grep opinions ) || ($KAFKA_SCRIPTS/create-topic opinions 8)
 	else
 		echo "This is defualt"
 	fi
@@ -56,22 +56,49 @@ start_cluster() {
 
 gradle_build() {
 	source /etc/profile
-	if [ $ROLE == "master" ] ; then
+	if [ $ROLE == "master" ] || [ $ROLE == "slave" ] ; then
 		cd /home/ubuntu/SparkBusters/SparkBusters/spark_module/Spark_Opinion_Mining
-		sed "s/localhost/$KAFKA_IP/" -i src/edu/bigdata/kafkaspark/helper/Constants.java 
 		ls lib/stanford-corenlp-models-current.jar || (cd lib/ && wget `cat download_link` && cd -)
 		gradle clean build
+	elif [ $ROLE == "kafka" ] ; then
+		cd /home/ubuntu/SparkBusters/SparkBusters/backend
+		gradle clean build
+	else 
+		echo "This is default"
 	fi
 }
 gradle_run() {
 	source /etc/profile
-	if [ $ROLE == "master" ] ; then
+	if [ $ROLE == "master" ] || [ $ROLE == "slave" ] ; then
 		cd /home/ubuntu/SparkBusters/SparkBusters/spark_module/Spark_Opinion_Mining
 		nohup gradle run &
 		echo $! > gradle.pid
+	elif [ $ROLE == "kafka" ] ; then 
+		cd /home/ubuntu/SparkBusters/SparkBusters/backend
+		nohup gradle run &
+		echo $! > gradle.pid
+		cd /home/ubuntu/SparkBusters/SparkBusters/kafka_modules/Tweets_Producer
+		nohup python3 tweets.py &
+		echo $! > tweet.pid
+	else
+		echo "This is default"
 	fi
 }
 
+gradle_stop() {
+	source /etc/profile
+	if [ $ROLE == "master" ] || [ $ROLE == "slave" ] ; then
+		cd /home/ubuntu/SparkBusters/SparkBusters/spark_module/Spark_Opinion_Mining
+		kill `cat gradle.pid`
+	elif [ $ROLE == "kafka" ] ; then
+		cd /home/ubuntu/SparkBusters/SparkBusters/backend
+		kill `cat gradle.pid`
+		cd /home/ubuntu/SparkBusters/SparkBusters/kafka_modules/Tweets_Producer
+		kill `cat tweet.pid`
+	else
+		echo "This is default"
+	fi
+}
 
 stop_cluster() {
 		

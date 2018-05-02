@@ -19,7 +19,7 @@ class MapComponent extends Component {
     return (
       <div>
       
-        <div className="MapComponent">
+        {/*<div className="MapComponent">
           <Route
             path="/"
             render={props => (
@@ -27,6 +27,7 @@ class MapComponent extends Component {
             )}
           />
         </div>
+      */}
       
         <SparkWrapper google={this.props.google} style={scrollAndHeight} />
       </div>

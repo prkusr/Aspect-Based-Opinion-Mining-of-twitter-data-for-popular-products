@@ -5,20 +5,21 @@ import TweetMap from "./TweetMap";
 import GraphVisualisation from "./GraphVisualisation";
 
 export default class SparkAppBody extends Component {
-
 	addToMap(m, k, v) {
 		m[k] = m[k] || [];
 		m[k].push(v);
 	}
 
 	render() {
-		
 		let position = [];
 		let categoryMap = {};
+
 		let totalTweets = this.props.opinions.length;
 		let opinionTweets = 0;
-		let positiveOpinionTweets = 0;
-		let negativeOpinionTweets = 0;
+
+		// let positiveOpinionTweets = 0;
+		// let negativeOpinionTweets = 0;
+		// let neutral = 0;
 
 		this.props.opinions.map(o => {
 			if (o.isOpinion) {
@@ -31,25 +32,24 @@ export default class SparkAppBody extends Component {
 				opinionTweets++;
 
 				o.aspects.map(aspect => {
-					if(aspect.sentiment >= 0)
-						positiveOpinionTweets++;
-					else
-						negativeOpinionTweets++;
+					// if (aspect.sentiment > 0) positiveOpinionTweets++;
+					// else if (aspect.sentiment > 0) negativeOpinionTweets++;
+					// else neutral++;
 
 					this.addToMap(categoryMap, aspect.category, {
 						tweet: o.text,
-						sentiment: aspect.sentiment
+						sentiment: aspect.sentiment,
+						lat: o.location[1],
+						lng: o.location[0]
 					});
 					return true;
 				});
 			}
 			return true;
 		});
-		
 
 		return (
 			<div className="container-fluid">
-				
 				<div className="center-block card">
 					<Route
 						path="/"
@@ -62,7 +62,7 @@ export default class SparkAppBody extends Component {
 						)}
 					/>
 				</div>
-				
+
 				<div
 					className="center-block card"
 					style={{ background: "#f1f1f1" }}

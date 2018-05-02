@@ -25,7 +25,7 @@ function test(){
 			"aspects": [{
 					"category": "camera",
 					"words": ["shot"],
-					"sentiment": 0
+					"sentiment": -1
 				},
 				{
 					"category": "screen",
@@ -57,7 +57,7 @@ function test(){
 			},{
 					"category": "camera",
 					"words": ["shot"],
-					"sentiment": 0
+					"sentiment": 1
 				}],
 
 			"location": [-89.57151, 35.497129],

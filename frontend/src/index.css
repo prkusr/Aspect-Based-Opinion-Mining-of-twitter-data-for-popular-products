@@ -1,8 +1,9 @@
 #custom-search-input {
     padding: 3px;
-    border: solid 1px #a49d9d;
+    border: solid 1px #000000;
     border-radius: 6px;
-    background-color: #fff;
+    background-color: #000000;
+    color:white;
 }
 
 #custom-search-input input {
@@ -137,7 +138,7 @@ body {
 
 .graph-panel {
     /*width: 20%;*/
-    background: #fff;
+    background: #00000080;
     padding: 0 30px 26px;
     border: 1px solid #d3d3d3;
     border-radius: 8px;
@@ -145,11 +146,13 @@ body {
     margin-top: 20px;
     margin-bottom: 18px;
     margin-left: 25px;
+    color: whitesmoke;
+    /*color: rgb(189, 165, 165);*/
 }
 
 .graph-panel h1{
     font-size: 24px;
-    color: rgba(0,0,0,.8);
+
 }
 /**/
 #googlemaps { 

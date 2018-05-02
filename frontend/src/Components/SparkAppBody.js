@@ -1,75 +1,100 @@
-import React, { Component } from "react";
-import { Route } from "react-router-dom";
+import React, {Component} from "react";
+import {Route} from "react-router-dom";
 import TweetMap from "./TweetMap";
-// import { GoogleApiWrapper } from "google-maps-react";
 import GraphVisualisation from "./GraphVisualisation";
+import {Doughnut, Polar, Pie} from "react-chartjs-2";
+import GraphPanel from "./GraphPanel";
+import SparkSearchBar from "./SparkSearchBar";
 
 export default class SparkAppBody extends Component {
-	addToMap(m, k, v) {
-		m[k] = m[k] || [];
-		m[k].push(v);
-	}
+    constructor(props) {
+        super(props);
+        this.state = {category: this.props.category};
+    }
 
-	render() {
-		let position = [];
-		let categoryMap = {};
+    updateCategory(c) {
+        this.setState({category: c});
+    }
 
-		let totalTweets = this.props.opinions.length;
-		let opinionTweets = 0;
+    render() {
+        const h1Style = {
+            maxHeight: "700px",
+            minHeight: "700px"
+        };
 
-		// let positiveOpinionTweets = 0;
-		// let negativeOpinionTweets = 0;
-		// let neutral = 0;
 
-		this.props.opinions.map(o => {
-			if (o.isOpinion) {
-				position.push({
-					lat: o.location[1],
-					lng: o.location[0],
-					tweet: o.text
-				});
+        let opinions = this.props.categoryMap[this.state.category];
+        let categories = [];
+        let keys = Object.keys(this.props.categoryMap);
+        let cLen = [];
 
-				opinionTweets++;
+        for (let i = 0; i < keys.length; i++) {
+            categories.push(<GraphPanel key={i} val={keys[i]} test={this.updateCategory.bind(this)}/>)
+            console.log(this.props.categoryMap[keys[i]]);
+        }
 
-				o.aspects.map(aspect => {
-					// if (aspect.sentiment > 0) positiveOpinionTweets++;
-					// else if (aspect.sentiment > 0) negativeOpinionTweets++;
-					// else neutral++;
+        const gData = {
+            datasets: [
+                {
+                    data: [10, 20, 12, 46, 80, 23, 45, 56],
+                    backgroundColor: [
+                        "#FF6384",
+                        "#4BC0C0",
+                        "#FFCE56",
+                        "#4d4f53",
+                        "#36A2EB",
+                        "#71b37b",
+                        "#f38b79",
+                        "#ac79f2"
 
-					this.addToMap(categoryMap, aspect.category, {
-						tweet: o.text,
-						sentiment: aspect.sentiment,
-						lat: o.location[1],
-						lng: o.location[0]
-					});
-					return true;
-				});
-			}
-			return true;
-		});
+                    ],
+                    label: "Categories" // for legend
+                }
+            ],
+            labels: keys
+        };
 
-		return (
-			<div className="container-fluid">
-				<div className="center-block card">
-					<Route
-						path="/"
-						render={props => (
-							<TweetMap
-								google={this.props.google}
-								positions={position}
-								{...props}
-							/>
-						)}
-					/>
-				</div>
+        console.log(opinions);
+        return (
+            <div id="bodyWrapper">
+                {/*<div className="MapComponent">*/}
+                {/*<Route*/}
+                {/*path="/"*/}
+                {/*render={props => (*/}
+                {/*<TweetMap google={this.props.google} opinions={opinions} {...props} />*/}
+                {/*)}*/}
+                {/*/>*/}
+                {/*</div>*/}
+                <div id="app-sidebar" style={h1Style}>
+                    <SparkSearchBar fetchPositions={this.props.fetchPositions.bind(this)}/>
+                    {this.props.isSearched && <div>
+                        <div className="graph-panel">
+                            <h1> Opinion categories </h1>
+                            {categories}
 
-				<div
-					className="center-block card"
-					style={{ background: "#f1f1f1" }}
-				>
-					<GraphVisualisation opinion={categoryMap} />
-				</div>
-			</div>
-		);
-	}
+                        </div>
+                        <div className="graph-panel">
+                            <h1> Category Data </h1>
+                            <Pie
+                                data={gData}
+                                width={400}
+                                height={400}
+                                options={{
+                                    maintainAspectRatio: true,
+                                    legend: {
+                                        labels: {
+                                            fontColor: "white",
+                                            fontSize: 16
+                                        }
+                                    }
+                                }}
+
+                            />
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+        );
+    }
 }

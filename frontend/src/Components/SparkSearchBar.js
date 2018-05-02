@@ -27,6 +27,7 @@ export default class SparkSearchBar extends Component {
 						type="text"
 						className="form-control input-lg"
 						placeholder="Enter a product name"
+						style={{background: "transparent",color:"white"}}
 					/>
 					<span className="input-group-btn">
 						<button

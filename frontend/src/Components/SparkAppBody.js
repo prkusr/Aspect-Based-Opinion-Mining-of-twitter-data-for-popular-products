@@ -30,13 +30,13 @@ export default class SparkAppBody extends Component {
 
         for (let i = 0; i < keys.length; i++) {
             categories.push(<GraphPanel key={i} val={keys[i]} test={this.updateCategory.bind(this)}/>)
-            console.log(this.props.categoryMap[keys[i]]);
+            cLen.push(this.props.categoryMap[keys[i]].length);
         }
 
         const gData = {
             datasets: [
                 {
-                    data: [10, 20, 12, 46, 80, 23, 45, 56],
+                    data: cLen,
                     backgroundColor: [
                         "#FF6384",
                         "#4BC0C0",
@@ -54,7 +54,7 @@ export default class SparkAppBody extends Component {
             labels: keys
         };
 
-        console.log(opinions);
+        console.log(cLen);
         return (
             <div id="bodyWrapper">
                 {/*<div className="MapComponent">*/}

@@ -6,7 +6,7 @@ import SparkSearchBar from "./SparkSearchBar";
 import {fetchPoints} from "../RESTApi/consumer";
 // import {PieChart}  from "react-chartjs/Pie";
 import {Doughnut, Polar} from "react-chartjs-2";
-import GraphPanel from "./GraphPanel";
+import SparkPanel from "./SparkPanel";
 import InfoSubPanel from './InfoSubPanel';
 import SparkAppBody from "./SparkAppBody";
 
@@ -83,10 +83,9 @@ export default class SparkWrapper extends Component {
 
 
         let categoryMap = {};
+
         let totalTweets = this.state.opinions.length;
         let opinionTweets = 0;
-        let positiveOpinionTweets = 0;
-        let negativeOpinionTweets = 0;
 
 
         this.state.opinions.map(o => {
@@ -95,9 +94,6 @@ export default class SparkWrapper extends Component {
                 opinionTweets++;
 
                 o.aspects.map(aspect => {
-                    // if (aspect.sentiment > 0) positiveOpinionTweets++;
-                    // else if (aspect.sentiment > 0) negativeOpinionTweets++;
-                    // else neutral++;
 
                     this.addToMap(categoryMap, aspect.category, {
                         tweet: o.text,
@@ -112,6 +108,7 @@ export default class SparkWrapper extends Component {
         });
 
         let category = Object.keys(categoryMap)[0];
+        let tweetStats = [opinionTweets,totalTweets ];
 
         return (
             <div id="wrap">
@@ -119,7 +116,7 @@ export default class SparkWrapper extends Component {
 
                 <SparkAppBody
                     fetchPositions={this.fetchPositions.bind(this)} categoryMap={categoryMap} category={category}
-                    google={this.props.google} isSearched={this.state.isSearched}
+                    google={this.props.google} isSearched={this.state.isSearched} stats={tweetStats}
                 />
                 {/*<div className="MapComponent">*/}
                 {/*<Route*/}

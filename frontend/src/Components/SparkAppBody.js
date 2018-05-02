@@ -2,8 +2,8 @@ import React, {Component} from "react";
 import {Route} from "react-router-dom";
 import TweetMap from "./TweetMap";
 import GraphVisualisation from "./GraphVisualisation";
-import {Doughnut, Polar, Pie} from "react-chartjs-2";
 import GraphPanel from "./GraphPanel";
+import SparkPanel from "./SparkPanel";
 import SparkSearchBar from "./SparkSearchBar";
 
 export default class SparkAppBody extends Component {
@@ -18,43 +18,39 @@ export default class SparkAppBody extends Component {
 
     render() {
         const h1Style = {
-            maxHeight: "700px",
-            minHeight: "700px"
+            maxHeight: "85%",
+            minHeight: "80%"
         };
 
 
-        let opinions = this.props.categoryMap[this.state.category];
         let categories = [];
         let keys = Object.keys(this.props.categoryMap);
         let cLen = [];
 
+        let cat = this.state.category || keys[0];
+        let opinions = this.props.categoryMap[cat];
+
+
         for (let i = 0; i < keys.length; i++) {
-            categories.push(<GraphPanel key={i} val={keys[i]} test={this.updateCategory.bind(this)}/>)
+            categories.push(<SparkPanel key={i} val={keys[i]} test={this.updateCategory.bind(this)}/>)
             cLen.push(this.props.categoryMap[keys[i]].length);
         }
 
-        const gData = {
-            datasets: [
-                {
-                    data: cLen,
-                    backgroundColor: [
-                        "#FF6384",
-                        "#4BC0C0",
-                        "#FFCE56",
-                        "#4d4f53",
-                        "#36A2EB",
-                        "#71b37b",
-                        "#f38b79",
-                        "#ac79f2"
+        let pos = 0;
+        let neg = 0;
+        let neutral = 0;
 
-                    ],
-                    label: "Categories" // for legend
-                }
-            ],
-            labels: keys
-        };
+        if (this.props.isSearched) {
+            opinions.map(o => {
+                if (o.sentiment == 0) neutral++;
+                else if (o.sentiment > 0) pos++;
+                else neg++;
 
-        console.log(cLen);
+                return true;
+            });
+
+        }
+        console.log(this.props.categoryMap[this.state.category]);
         return (
             <div id="bodyWrapper">
                 {/*<div className="MapComponent">*/}
@@ -73,24 +69,11 @@ export default class SparkAppBody extends Component {
                             {categories}
 
                         </div>
-                        <div className="graph-panel">
-                            <h1> Category Data </h1>
-                            <Pie
-                                data={gData}
-                                width={400}
-                                height={400}
-                                options={{
-                                    maintainAspectRatio: true,
-                                    legend: {
-                                        labels: {
-                                            fontColor: "white",
-                                            fontSize: 16
-                                        }
-                                    }
-                                }}
-
-                            />
-                        </div>
+                        <GraphPanel title={"Sentiment"} labels={["Positive", "Negative", "Neutral"]}
+                                    gData={[pos, neg, neutral]}/>
+                        <GraphPanel title={"Opinion"} labels={["Opinion", "Not an opinion"]}
+                                    gData={[this.props.stats[0], this.props.stats[1] - this.props.stats[0]]}/>
+                        <GraphPanel title={"Category Info"} labels={keys} gData={cLen}/>
                     </div>
                     }
                 </div>

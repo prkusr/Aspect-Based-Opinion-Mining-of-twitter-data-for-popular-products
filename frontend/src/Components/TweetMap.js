@@ -5,18 +5,18 @@ export default class TweetMap extends Component {
 	componentDidUpdate(prevProps, prevState) {
 		if (
 			prevProps.google !== this.props.google ||
-			prevProps.positions !== this.props.positions
+			prevProps.opinions !== this.props.opinions
 		) {
 			this.renderMap();
 		}
 	}
 
 	componentDidMount() {
-		// if(this.props.positions[0] != undefined)
 		this.renderMap();
 	}
 
 	renderMap() {
+	    // console.log(this.props.opinions);
 		const mapStyle = 
 			 [
 				{ elementType: "geometry", stylers: [{ color: "#242f3e" }] },
@@ -118,7 +118,7 @@ export default class TweetMap extends Component {
 				{
 					center: { lat: 39.7392, lng: -104.9903 },
 					zoom: 5,
-					// gestureHandling: "cooperative",
+					gestureHandling: "cooperative",
 					mapTypeId: "terrain",
 					styles : mapStyle
 				}
@@ -127,45 +127,49 @@ export default class TweetMap extends Component {
 			this.map = new maps.Map(node, mapConfig);
 			var heatmapData = [];
 
-			// this.props.positions.map(position => {
-			// 	heatmapData.push({
-			// 		location: new google.maps.LatLng(
-			// 			position.lat,
-			// 			position.lng
-			// 		),
-			// 		weight: 5
-			// 	});
 
-			// const marker = new google.maps.Marker({
-			// 	position: {
-			// 		lat: position.lat,
-			// 		lng: position.lng
-			// 	},
-			// 	map: this.map,
-			// 	title: position.weight,
+            if(this.props.opinions) {
+                this.props.opinions.map(position => {
+                    heatmapData.push({
+                        location: new google.maps.LatLng(
+                            position.lat,
+                            position.lng
+                        ),
+                        weight: position.sentiment
+                    });
+                });
 
-			// });
-			//icon: {
-			// url:
-			// "https://cdn3.iconfinder.com/data/icons/picons-social/57/03-twitter-32.png"
-			// }
+                // const marker = new google.maps.Marker({
+                // 	position: {
+                // 		lat: position.lat,
+                // 		lng: position.lng
+                // 	},
+                // 	map: this.map,
+                // 	title: position.weight,
 
-			// const infowindow = new google.maps.InfoWindow({
-			// 	// We will put in all the tweet and other info here. Need to work on CSS as well
-			// 	content: `<h3>${position.weight}</h3>`
-			// });
+                // });
+                //icon: {
+                // url:
+                // "https://cdn3.iconfinder.com/data/icons/picons-social/57/03-twitter-32.png"
+                // }
 
-			// marker.addListener("click", function() {
-			// 	infowindow.open(this.map, marker);
-			// });
-			// return true;
-			// });
+                // const infowindow = new google.maps.InfoWindow({
+                // 	// We will put in all the tweet and other info here. Need to work on CSS as well
+                // 	content: `<h3>${position.weight}</h3>`
+                // });
 
-			const heatmap = new google.maps.visualization.HeatmapLayer({
-				data: heatmapData,
-				radius: 40
-			});
-			heatmap.setMap(this.map);
+                // marker.addListener("click", function() {
+                // 	infowindow.open(this.map, marker);
+                // });
+                // return true;
+                // });
+
+                const heatmap = new google.maps.visualization.HeatmapLayer({
+                    data: heatmapData,
+                    radius: 40
+                });
+                heatmap.setMap(this.map);
+            }
 		}
 	}
 
@@ -177,9 +181,9 @@ export default class TweetMap extends Component {
 
 		return (
 			<div className="wrapper">
-				<center>
-					<h2> Heatmap visualization based on opinionated tweets </h2>
-				</center>
+				{/*<center>*/}
+					{/*<h2> Heatmap visualization based on opinionated tweets </h2>*/}
+				{/*</center>*/}
 				<div ref="map" id="googlemaps">
 					Loading map........
 				</div>

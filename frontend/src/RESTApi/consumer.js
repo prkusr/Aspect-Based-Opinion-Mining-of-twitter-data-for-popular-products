@@ -43,7 +43,7 @@ function test(){
 			"totalTweets": 10,
 			"aspects": [],
 
-			"location": [-89.57151, 36.497129],
+			"location": [-89.57151, 37.497129],
 			"id": 990433011953958912,
 			"text": "Parts of Fun"
 		}, {
@@ -60,7 +60,7 @@ function test(){
 					"sentiment": 0
 				}],
 
-			"location": [-89.57151, 36.497129],
+			"location": [-89.57151, 35.497129],
 			"id": 990433011953958912,
 			"text": "Face is just a mask"
 		}]	`

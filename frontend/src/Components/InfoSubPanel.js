@@ -25,7 +25,7 @@ export default class InfoSubPanel extends Component {
 
 		return (
 			
-			<div className="col-sm-6">
+			
 				<div className="thumbnail" style={scrollAndHeight}>
 					<center>
 						<h4>{sentiType}</h4>
@@ -34,7 +34,7 @@ export default class InfoSubPanel extends Component {
 					{tweets}
 					<div className="caption" />
 				</div>
-			</div>
+		
 		);
 	}
 }

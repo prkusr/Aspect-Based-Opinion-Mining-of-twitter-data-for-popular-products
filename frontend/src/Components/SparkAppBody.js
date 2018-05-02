@@ -53,14 +53,14 @@ export default class SparkAppBody extends Component {
         console.log(this.props.categoryMap[this.state.category]);
         return (
             <div id="bodyWrapper">
-                {/*<div className="MapComponent">*/}
-                {/*<Route*/}
-                {/*path="/"*/}
-                {/*render={props => (*/}
-                {/*<TweetMap google={this.props.google} opinions={opinions} {...props} />*/}
-                {/*)}*/}
-                {/*/>*/}
-                {/*</div>*/}
+                <div className="MapComponent">
+                    <Route
+                        path="/"
+                        render={props => (
+                            <TweetMap google={this.props.google} opinions={opinions} {...props} />
+                        )}
+                    />
+                </div>
                 <div id="app-sidebar" style={h1Style}>
                     <SparkSearchBar fetchPositions={this.props.fetchPositions.bind(this)}/>
                     {this.props.isSearched && <div>

@@ -47,6 +47,7 @@ public class MessageStorage {
     public List<Tweet> pollFor(String searchString, int pollInMS) {
         pollInMS = Math.min(Math.min(pollInMS, MIN_POLL_IN_MS), MAX_POLL_IN_MS);
         int max_iterations = POLL_THRESHOLD_IN_MS / pollInMS;
+        boolean noMessageReceivedInPreviousIteration = false;
         try {
             List<Tweet> consumedOpinions = null;
             do {
@@ -58,8 +59,12 @@ public class MessageStorage {
                 consumedOpinions = getOpinionsAndDeleteFromStorage(searchString, false);
                 int currentMessageSize = currentMessageSize(searchString);
                 if (currentMessageSize != 0 && prevMessageSize == currentMessageSize)
-                    return getOpinionsAndDeleteFromStorage(searchString, true);
-
+                    if(noMessageReceivedInPreviousIteration)
+                        return getOpinionsAndDeleteFromStorage(searchString, true);
+                    else
+                        noMessageReceivedInPreviousIteration = true;
+                else
+                    noMessageReceivedInPreviousIteration = false;
             } while (consumedOpinions == null);
             return consumedOpinions != null ? consumedOpinions : new ArrayList<>();
         } catch (Exception e) {

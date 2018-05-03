@@ -17,8 +17,8 @@ import java.io.IOException;
 import java.util.*;
 
 public class Constants {
+    public static final Integer NUMBER_OF_PARTITIONS_TO_CONSUME = 4;
     private Map<String, List<String>> wordToCategories;
-    private final Map<String, String> kafkaSparkStreamConf;
     private final KafkaProducer<String, String> kafkaProducer;
     private final AspectCategoryCreator aspectCategoryCreator;
     private static Constants singleton = null;
@@ -26,7 +26,6 @@ public class Constants {
     public static final String SENDING_TOPIC = "opinions";
     public static final String RECEIVING_TOPIC = "tweets";
     private static final String TAGGER_PATH = "edu/stanford/nlp/models/pos-tagger/english-left3words/english-left3words-distsim.tagger";
-
 
     public static class JSONKeys {
         public static final String TWEET_KEY = "text";
@@ -57,9 +56,6 @@ public class Constants {
         kakfaProducerProps.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         kakfaProducerProps.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 
-        kafkaSparkStreamConf = new HashMap<>();
-        kafkaSparkStreamConf.put("metadata.broker.list", hostName);
-
         kafkaProducer = new KafkaProducer<>(kakfaProducerProps);
 
         WuPalmer wuPalmer = new WuPalmer(wordNet);
@@ -75,7 +71,8 @@ public class Constants {
 
         ObjectMapper mapper = new ObjectMapper();
         try {
-            wordToCategories = mapper.readValue(new File("result.json"), new TypeReference<Map<String, List<String>>>() {});
+            wordToCategories = mapper.readValue(new File("result.json"), new TypeReference<Map<String, List<String>>>() {
+            });
             System.out.printf("\n\n\n\nLoaded categories. Size %s\n\n\n\n", wordToCategories.size());
         } catch (IOException ignored) {
             wordToCategories = new HashMap<>();
@@ -88,8 +85,12 @@ public class Constants {
         return singleton;
     }
 
-    public static Map<String, String> kafkaSparkStreamConfig() {
-        return getSingleton().kafkaSparkStreamConf;
+    public static String zooKeeperHostName() {
+        return System.getenv("KAFKA_IP") + ":" + System.getenv("ZOO_KEEPER_PORT");
+    }
+
+    public static String consumerGroupId() {
+        return "sparkNodes";
     }
 
     public static Map<String, List<String>> wordToCategories() {

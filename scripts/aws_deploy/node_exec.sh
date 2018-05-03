@@ -46,7 +46,7 @@ start_cluster() {
 	elif [ $ROLE == "kafka" ] ; then
 		echo "This is kafka"
 		(netstat -ant | grep 9092 | grep ESTABLISHED) || (nohup $KAFKA_HOME/bin/kafka-server-start.sh $KAFKA_HOME/config/server.properties  > /dev/null &)
-		($KAFKA_SCRIPTS/list-topics | grep tweets ) || ($KAFKA_SCRIPTS/create-topic tweets 15)	
+		($KAFKA_SCRIPTS/list-topics | grep tweets ) || ($KAFKA_SCRIPTS/create-topic tweets 16)	
 		($KAFKA_SCRIPTS/list-topics | grep search_string ) || ($KAFKA_SCRIPTS/create-topic search_string 1)	
 		($KAFKA_SCRIPTS/list-topics | grep opinions ) || ($KAFKA_SCRIPTS/create-topic opinions 8)
 	else

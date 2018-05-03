@@ -31,7 +31,7 @@ public class AspectCategories {
         }
     }
 
-    public boolean isEmpty() {
+    boolean isEmpty() {
         return categoryToAspectCategory.isEmpty();
     }
 

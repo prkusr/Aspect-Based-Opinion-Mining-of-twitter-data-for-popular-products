@@ -1,5 +1,8 @@
 package edu.bigData.sparkBusters.configuration;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.bigData.sparkBusters.configuration.serializer.JsonRedisSerializer;
 import edu.bigData.sparkBusters.model.Tweet;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -8,10 +11,17 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
+import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
@@ -25,9 +35,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @EnableKafka
+@EnableCaching
 @Configuration
 @PropertySource("classpath:kafka.consumer.properties")
-public class KafkaConfig {
+public class AppConfig {
 
     @Value("${group.id}")
     private String groupId;
@@ -35,7 +46,7 @@ public class KafkaConfig {
     private final Environment env;
 
     @Autowired
-    public KafkaConfig(Environment env) {
+    public AppConfig(Environment env) {
         this.env = env;
     }
 
@@ -86,6 +97,34 @@ public class KafkaConfig {
         ConcurrentKafkaListenerContainerFactory<String, Tweet> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory());
         return factory;
+    }
+
+    @Bean
+    public JedisConnectionFactory redisConnectionFactory() {
+        JedisConnectionFactory redisConnectionFactory = new JedisConnectionFactory();
+
+        redisConnectionFactory.setHostName(System.getenv("REDIS_IP"));
+        redisConnectionFactory.setPort(Integer.valueOf(System.getenv("REDIS_PORT")));
+        return redisConnectionFactory;
+    }
+
+    @Bean
+    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, String> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(connectionFactory);
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        ObjectMapper objectMapper = new ObjectMapper().enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL,
+                                                                                        JsonTypeInfo.As.PROPERTY);
+
+        redisTemplate.setValueSerializer(new JsonRedisSerializer(objectMapper));
+        return redisTemplate;
+    }
+
+    @Bean
+    public CacheManager cacheManager(RedisTemplate redisTemplate) {
+        RedisCacheManager cacheManager = new RedisCacheManager(redisTemplate);
+        cacheManager.setDefaultExpiration(300);
+        return cacheManager;
     }
 
     private String kafkaAddress() {

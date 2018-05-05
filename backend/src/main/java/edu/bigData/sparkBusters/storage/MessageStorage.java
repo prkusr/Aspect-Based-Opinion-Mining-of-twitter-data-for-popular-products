@@ -11,12 +11,14 @@ import java.util.Map;
 
 @Component
 public class MessageStorage {
+    private static final int ITERATION_THRESHOLD = 5;
+    private static final int MIN_POLL_IN_MS = 200;
+    private static final int MAX_POLL_IN_MS = 1500;
+    private static final int POLL_THRESHOLD_IN_MS = 60000;
+
     private Map<String, ConsumedTweets> searchStrToOpinions = new HashMap<>();
     private final Object storageLock = new Object();
 
-    private static final int MIN_POLL_IN_MS = 500;
-    private static final int MAX_POLL_IN_MS = 1500;
-    private static final int POLL_THRESHOLD_IN_MS = 60000;
 
     public void add(Tweet tweet) {
         synchronized (storageLock) {
@@ -45,9 +47,9 @@ public class MessageStorage {
     }
 
     public List<Tweet> pollFor(String searchString, int pollInMS) {
-        pollInMS = Math.min(Math.min(pollInMS, MIN_POLL_IN_MS), MAX_POLL_IN_MS);
+        pollInMS = Math.min(Math.max(pollInMS, MIN_POLL_IN_MS), MAX_POLL_IN_MS);
         int max_iterations = POLL_THRESHOLD_IN_MS / pollInMS;
-        boolean noMessageReceivedInPreviousIteration = false;
+        int noOfIterationWithoutMessages = 0;
         try {
             List<Tweet> consumedOpinions = null;
             do {
@@ -58,13 +60,13 @@ public class MessageStorage {
                 }
                 consumedOpinions = getOpinionsAndDeleteFromStorage(searchString, false);
                 int currentMessageSize = currentMessageSize(searchString);
-                if (currentMessageSize != 0 && prevMessageSize == currentMessageSize)
-                    if(noMessageReceivedInPreviousIteration)
+                if (currentMessageSize != 0 && prevMessageSize == currentMessageSize) {
+                    noOfIterationWithoutMessages++;
+                    if (noOfIterationWithoutMessages > ITERATION_THRESHOLD)
                         return getOpinionsAndDeleteFromStorage(searchString, true);
-                    else
-                        noMessageReceivedInPreviousIteration = true;
+                }
                 else
-                    noMessageReceivedInPreviousIteration = false;
+                    noOfIterationWithoutMessages = 0;
             } while (consumedOpinions == null);
             return consumedOpinions != null ? consumedOpinions : new ArrayList<>();
         } catch (Exception e) {

@@ -11,7 +11,7 @@ import java.util.Map;
 
 @Component
 public class MessageStorage {
-    private static final int ITERATION_THRESHOLD = 5;
+    private static final int ITERATION_THRESHOLD = Integer.valueOf(System.getenv("ITERATION_THRESHOLD"));
     private static final int MIN_POLL_IN_MS = 200;
     private static final int MAX_POLL_IN_MS = 1500;
     private static final int POLL_THRESHOLD_IN_MS = 60000;

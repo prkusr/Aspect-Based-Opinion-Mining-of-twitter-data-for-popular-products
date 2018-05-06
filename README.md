@@ -1,11 +1,26 @@
-# SparkBusters
-The idea of this project is to visualise aspect-based opinion of certain products (electronics specifically) based on demographics, sentiments and heat maps. A user can see opinions and sentiments of people for a particular product of a particular electronics brand on a heat map. The user can change demographics (location, gender, age-group) etc. to have get a better analysis of what people like or don't like about a particular product.  This application can be helpful to companies who want to have get an idea of how the response of people in a particular location is when a product is launched.
+#SparkBusters
 
-# Project Application
-This project can help electronic companies to get **real time opinions** of their certain products which are launched recently. Also, they can focus on what particular aspect of that product people like or don't like demographically on a user friendly heat map.
+The idea of the project is to visualize the aspect-based opinions of a given product in real time as a heat map based on demographics.
+A user can see the twitter sentiment for a given a product ona  heat map. This applications would be usefull for companies who would want to see how any product is being recieved by the public.
 
-# Project Deployment
+###Getting Started
+
+**_Prerequisites_**
+1. Spark
+2. Kafka
+3. React.JS
+
+**_Installing_**
+1. Clone or download the repository
+2. Run index.html
+
+###Deployment
 
 
+###Built With
+1. Spark
+2. Kafka
+3. Standford's Core NLP
+4. React.js
 
-
+###Authors

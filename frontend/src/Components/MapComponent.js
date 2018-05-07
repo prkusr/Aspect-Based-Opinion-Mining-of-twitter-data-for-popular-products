@@ -37,6 +37,6 @@ class MapComponent extends Component {
 }
 
 export default GoogleApiWrapper({
-    apiKey: process.env.googleMapsApiKey,
+    apiKey: process.env.REACT_APP_GOOGLE_MAP_KEY,
     libraries: ["visualization"]
 })(MapComponent);

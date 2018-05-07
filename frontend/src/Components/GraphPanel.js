@@ -29,7 +29,7 @@ export default class GraphPanel extends Component {
         return (
             <div className="graph-panel">
                 <h1> {this.props.title} </h1>
-                <Pie
+                <Doughnut
                     data={graphData}
                     width={400}
                     height={400}

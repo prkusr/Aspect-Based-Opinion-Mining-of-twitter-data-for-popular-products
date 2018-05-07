@@ -19,6 +19,10 @@ export default class SparkWrapper extends Component {
 
     fetchPositions(q) {
         return this.setState({opinions: fetchPoints(q) , isSearched:true});
+        // return fetchPoints(q).then((res) => {
+        //     console.log(res);
+        //     this.setState({opinions: res, isSearched: true})
+        // });
     }
 
     updatePositions(p) {
@@ -78,7 +82,6 @@ export default class SparkWrapper extends Component {
         let categories = [];
 
 
-
         // if( )
 
 
@@ -108,7 +111,7 @@ export default class SparkWrapper extends Component {
         });
 
         let category = Object.keys(categoryMap)[0];
-        let tweetStats = [opinionTweets,totalTweets ];
+        let tweetStats = [opinionTweets, totalTweets];
 
         return (
             <div id="wrap">
@@ -129,8 +132,8 @@ export default class SparkWrapper extends Component {
 
 
                 {/*<div id="app-sidebar" style={h1Style}>*/}
-                    {/*<SparkSearchBar fetchPositions={this.fetchPositions.bind(this)}/>*/}
-                    {/*<div id="main">
+                {/*<SparkSearchBar fetchPositions={this.fetchPositions.bind(this)}/>*/}
+                {/*<div id="main">
 					<h1 style={h1Style}>SparkBusters</h1>
 					<h2 style={color}>
 						Twitter Aspect Based Opinion Mining and Sentiment
@@ -189,20 +192,18 @@ export default class SparkWrapper extends Component {
 				*/}
 
 
-                    {/*
+                {/*
 				<InfoSubPanel type={true} tweets={testTweet}/>
 				<InfoSubPanel type={false} tweets={tt}/>
 				*/}
 
 
+                {/*{ this.state.isSearched && <div className="graph-panel">*/}
+                {/*<h1> Opinion categories </h1>*/}
+                {/*{categories}*/}
+                {/*</div>  }*/}
 
-
-                    {/*{ this.state.isSearched && <div className="graph-panel">*/}
-                        {/*<h1> Opinion categories </h1>*/}
-                        {/*{categories}*/}
-                    {/*</div>  }*/}
-
-                    {/*/!*{body} *!/*/}
+                {/*/!*{body} *!/*/}
                 {/*</div>*/}
             </div>
         );

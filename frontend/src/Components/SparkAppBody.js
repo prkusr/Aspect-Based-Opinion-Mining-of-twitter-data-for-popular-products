@@ -50,7 +50,7 @@ export default class SparkAppBody extends Component {
             });
 
         }
-        console.log(this.props.categoryMap[this.state.category]);
+
         return (
             <div id="bodyWrapper">
                 <div className="MapComponent">

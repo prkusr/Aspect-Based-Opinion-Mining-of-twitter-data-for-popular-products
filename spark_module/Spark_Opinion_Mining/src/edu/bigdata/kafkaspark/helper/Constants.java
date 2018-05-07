@@ -60,23 +60,29 @@ public class Constants {
 
         WuPalmer wuPalmer = new WuPalmer(wordNet);
 
-        TextProcessor textProcessor = new TextProcessor(wuPalmer);
         MaxentTagger tagger = new MaxentTagger(TAGGER_PATH);
         DependencyParser parser = DependencyParser.loadFromModelFile(DependencyParser.DEFAULT_MODEL);
 
         Properties coreNLPProps = new Properties();
         coreNLPProps.setProperty("annotators", "tokenize, ssplit, parse, sentiment");
         StanfordCoreNLP coreNLPPipeline = new StanfordCoreNLP(coreNLPProps);
-        aspectCategoryCreator = new AspectCategoryCreator(tagger, parser, textProcessor, coreNLPPipeline);
 
         ObjectMapper mapper = new ObjectMapper();
+        Map<String, String> typosToCorrections;
         try {
-            wordToCategories = mapper.readValue(new File("result.json"), new TypeReference<Map<String, List<String>>>() {
-            });
-            System.out.printf("\n\n\n\nLoaded categories. Size %s\n\n\n\n", wordToCategories.size());
+            wordToCategories = mapper.readValue(new File("result.json"),
+                                                new TypeReference<Map<String, List<String>>>() {});
+            typosToCorrections = mapper.readValue(new File("normalization.json"),
+                                                  new TypeReference<Map<String, String>>() {});
+            System.out.printf("\n\n\n\nLoaded Categories and Typos. Size %s and %s\n\n\n\n", wordToCategories.size(),
+                                                                                            typosToCorrections.size());
         } catch (IOException ignored) {
             wordToCategories = new HashMap<>();
+            typosToCorrections = new HashMap<>();
         }
+
+        TextProcessor textProcessor = new TextProcessor(wuPalmer, typosToCorrections);
+        aspectCategoryCreator = new AspectCategoryCreator(tagger, parser, textProcessor, coreNLPPipeline);
     }
 
     private static Constants getSingleton() {

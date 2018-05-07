@@ -10,11 +10,10 @@ export default class SparkWrapper extends Component {
 
     fetchPositions(q) {
         // Toggle comments to work with mock data and live processed data.Also change in middleware.
-        return this.setState({opinions: fetchPoints(q) , isSearched:true});
-        // return fetchPoints(q).then((res) => {
-        //     console.log(res);
-        //     this.setState({opinions: res, isSearched: true})
-        // });
+        // return this.setState({opinions: fetchPoints(q) , isSearched:true});
+        return fetchPoints(q).then((res) => {
+            this.setState({opinions: res, isSearched: true})
+        });
     }
 
 

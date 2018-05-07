@@ -1,7 +1,6 @@
 import React, {Component} from "react";
 import {Route} from "react-router-dom";
 import TweetMap from "./TweetMap";
-import GraphVisualisation from "./GraphVisualisation";
 import GraphPanel from "./GraphPanel";
 import SparkPanel from "./SparkPanel";
 import SparkSearchBar from "./SparkSearchBar";
@@ -42,7 +41,7 @@ export default class SparkAppBody extends Component {
 
         if (this.props.isSearched) {
             opinions.map(o => {
-                if (o.sentiment == 0) neutral++;
+                if (o.sentiment === 0) neutral++;
                 else if (o.sentiment > 0) pos++;
                 else neg++;
 

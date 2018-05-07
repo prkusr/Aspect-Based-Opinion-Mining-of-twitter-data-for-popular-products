@@ -21,6 +21,12 @@ export default class SparkAppBody extends Component {
             minHeight: "80%"
         };
 
+        const h2Style = {
+            maxHeight: "10%",
+            minHeight: "8%",
+            display:"inline-flex",
+            color:"whitesmoke"
+        };
 
         let categories = [];
         let keys = Object.keys(this.props.categoryMap);
@@ -52,22 +58,26 @@ export default class SparkAppBody extends Component {
 
         return (
             <div id="bodyWrapper">
-                <div className="MapComponent">
-                    <Route
-                        path="/"
-                        render={props => (
-                            <TweetMap google={this.props.google} opinions={opinions} {...props} />
-                        )}
-                    />
+                {/*<div className="MapComponent">*/}
+                    {/*<Route*/}
+                        {/*path="/"*/}
+                        {/*render={props => (*/}
+                            {/*<TweetMap google={this.props.google} opinions={opinions} {...props} />*/}
+                        {/*)}*/}
+                    {/*/>*/}
+                {/*</div>*/}
+                <div id="app-topbar" style={h2Style}>
+                    {/*<h1> Opinion categories </h1>*/}
+                    {categories}
                 </div>
                 <div id="app-sidebar" style={h1Style}>
                     <SparkSearchBar fetchPositions={this.props.fetchPositions.bind(this)}/>
                     {this.props.isSearched && <div>
-                        <div className="graph-panel">
-                            <h1> Opinion categories </h1>
-                            {categories}
+                        {/*<div className="graph-panel">*/}
+                            {/*<h1> Opinion categories </h1>*/}
+                            {/*{categories}*/}
 
-                        </div>
+                        {/*</div>*/}
                         <GraphPanel title={"Sentiment"} labels={["Positive", "Negative", "Neutral"]}
                                     gData={[pos, neg, neutral]}/>
                         <GraphPanel title={"Opinion"} labels={["Opinion", "Not an opinion"]}

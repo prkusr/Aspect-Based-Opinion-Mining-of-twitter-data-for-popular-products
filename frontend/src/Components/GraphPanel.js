@@ -31,10 +31,10 @@ export default class GraphPanel extends Component {
                 <h1> {this.props.title} </h1>
                 <Doughnut
                     data={graphData}
-                    width={400}
-                    height={400}
+                    width={100}
+                    height={100}
                     options={{
-                        maintainAspectRatio: true,
+                        maintainAspectRatio: false,
                         legend: {
                             labels: {
                                 fontColor: "white",

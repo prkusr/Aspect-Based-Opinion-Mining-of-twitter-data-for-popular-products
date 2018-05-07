@@ -1,11 +1,11 @@
-                                /*SparkBusters CSS attributes file start*/
+/*SparkBusters CSS attributes file start*/
 /*Spark Search Bar CSS attributes*/
 #custom-search-input {
     padding: 3px;
     border: solid 1px #000000;
     border-radius: 6px;
     background-color: #000000;
-    color:white;
+    color: white;
 }
 
 #custom-search-input input {
@@ -32,6 +32,7 @@
 #custom-search-input .glyphicon-search {
     font-size: 23px;
 }
+
 /*Spark Search Bar CSS attributes End*/
 
 /* Card like templates*/
@@ -54,14 +55,13 @@ body {
     margin-top: 20px;
 }
 
-
 .graph-panel {
     /*width: 20%;*/
     background: #00000080;
     padding: 0 30px 26px;
     border: 1px solid #d3d3d3;
     border-radius: 8px;
-    box-shadow: 0 1px 2px 0 rgba(60,64,67,.302), 0 1px 3px 1px rgba(60,64,67,.149);
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .302), 0 1px 3px 1px rgba(60, 64, 67, .149);
     margin-top: 20px;
     margin-bottom: 18px;
     margin-left: 25px;
@@ -69,25 +69,26 @@ body {
     /*color: rgb(189, 165, 165);*/
 }
 
-.graph-panel h1{
+.graph-panel h1 {
     font-size: 24px;
 
 }
 
 /*CSS attributes for google maps Begin*/
-#googlemaps { 
-  height: 100%; 
-  width: 100%; 
-  position:absolute; 
-  top: 0; 
-  left: 0; 
-  z-index: 0 !important;  
+#googlemaps {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0 !important;
 }
 
-#main{
+#main {
     position: relative;
     z-index: 1 !important;
 }
+
 /*CSS attributes for google maps End*/
 
 /*Side scroll start*/
@@ -97,16 +98,34 @@ body {
     left: 0;
     top: 5%;
     width: 20%;
-    overflow-y: scroll;  
+    overflow-y: scroll;
+
 }
 
-::-webkit-scrollbar { 
-    display: none; 
+/*Side scroll start*/
+#app-topbar {
+    padding-bottom: 20px;
+    padding-left: 20px;
+    position: absolute;
+    left: 20%;
+    top: 5%;
+    width: auto;
+    height: 5%;
+    overflow-y: scroll;
+    background: #00000080;
+    border: 1px solid #d3d3d3;
+    border-radius: 40px;
+    box-shadow: 0 1px 2px 0 rgba(60, 64, 67, .302), 0 1px 3px 1px rgba(60, 64, 67, .149);
 }
+
+::-webkit-scrollbar {
+    display: none;
+}
+
 /*Side scroll end*/
 
 /* Button effects on app-sidebar start*/
-.category{
+.category {
     border: 0px solid #ffffff;
     padding: 6px 24px 12px 20px;
     margin-top: 14px;
@@ -116,12 +135,13 @@ body {
 }
 
 .category:hover {
-    box-shadow: 0 1px 2px 0 #ffffff,0 1px 3px 1px rgba(22, 67, 14, 0.15);
+    box-shadow: 0 1px 2px 0 #ffffff, 0 1px 3px 1px rgba(22, 67, 14, 0.15);
     color: #b7855d;
 }
 
 .category:active {
-    box-shadow: 0 1px 3px 0 rgba(60,64,67,.302),0 4px 8px 3px rgba(60,64,67,.149)
+    box-shadow: 0 1px 3px 0 rgba(60, 64, 67, .302), 0 4px 8px 3px rgba(60, 64, 67, .149)
 }
+
 /* Button effects on app-sidebar end*/
-                                /*SparkBusters CSS attributes file end*/
+/*SparkBusters CSS attributes file end*/

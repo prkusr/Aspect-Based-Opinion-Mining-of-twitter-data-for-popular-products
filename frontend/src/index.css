@@ -1,3 +1,5 @@
+                                /*SparkBusters CSS attributes file start*/
+/*Spark Search Bar CSS attributes*/
 #custom-search-input {
     padding: 3px;
     border: solid 1px #000000;
@@ -30,6 +32,7 @@
 #custom-search-input .glyphicon-search {
     font-size: 23px;
 }
+/*Spark Search Bar CSS attributes End*/
 
 /* Card like templates*/
 * {
@@ -40,36 +43,7 @@
 body {
     font-family: Arial;
     padding: 20px;
-    background: url("/img/body_bg.png");
-}
-
-/* Header/Blog Title */
-.header {
-    padding: 35px;
-    font-size: 40px;
-    text-align: center;
-    margin-left: 5%;
-    margin-right: 5%;
-}
-
-/* Create two unequal columns that floats next to each other */
-/* Left column */
-.leftcolumn {
-    width: 90%;
-}
-
-/* Right column */
-.rightcolumn {
-    float: left;
-    width: 25%;
-    padding-left: 20px;
-}
-
-/* Fake image */
-.fakeimg {
-    background-color: #aaa;
-    width: 100%;
-    padding: 20px;
+    background: url('/img/body_bg.png');
 }
 
 /* Add a card effect for articles */
@@ -78,61 +52,6 @@ body {
     background-color: white;
     padding: 20px;
     margin-top: 20px;
-}
-
-/* Clear floats after the columns */
-.approw:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-/* Footer */
-.footer {
-    padding: 20px;
-    text-align: center;
-    background: #ddd;
-    margin-top: 20px;
-}
-
-/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
-@media screen and (max-width: 800px) {
-    .leftcolumn,
-    .rightcolumn {
-        width: 100%;
-        padding: 0;
-    }
-}
-
-.top-buffer {
-    margin-top: 20px;
-}
-
-
-@media (min-width: 768px){
-    .col-sm-custom {
-        width: 2.333333%;
-        float: left;
-        position: relative;
-        min-height: 1px;
-        padding-right: 15px;
-        padding-left: 15px;
-    }
-}
-
-
-.container-center {
-    margin: 0 auto;
-    width: 100%;
-}
-
-@media (min-width: 768px){
-    .col-sm-5-c{
-        width: 46%;
-        position: relative;
-        min-height: 1px;
-        float: left;
-    }
 }
 
 
@@ -154,7 +73,8 @@ body {
     font-size: 24px;
 
 }
-/**/
+
+/*CSS attributes for google maps Begin*/
 #googlemaps { 
   height: 100%; 
   width: 100%; 
@@ -168,7 +88,9 @@ body {
     position: relative;
     z-index: 1 !important;
 }
+/*CSS attributes for google maps End*/
 
+/*Side scroll start*/
 #app-sidebar {
     padding: 10px;
     position: absolute;
@@ -181,8 +103,9 @@ body {
 ::-webkit-scrollbar { 
     display: none; 
 }
+/*Side scroll end*/
 
-
+/* Button effects on app-sidebar start*/
 .category{
     border: 0px solid #ffffff;
     padding: 6px 24px 12px 20px;
@@ -200,3 +123,5 @@ body {
 .category:active {
     box-shadow: 0 1px 3px 0 rgba(60,64,67,.302),0 4px 8px 3px rgba(60,64,67,.149)
 }
+/* Button effects on app-sidebar end*/
+                                /*SparkBusters CSS attributes file end*/

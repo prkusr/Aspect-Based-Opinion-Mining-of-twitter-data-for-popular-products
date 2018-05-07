@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Doughnut, Polar, Pie} from "react-chartjs-2";
+import {Doughnut} from "react-chartjs-2";
 
 export default class GraphPanel extends Component {
     render() {

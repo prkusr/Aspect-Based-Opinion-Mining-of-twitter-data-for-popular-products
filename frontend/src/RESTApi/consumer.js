@@ -1,8 +1,8 @@
-require('dotenv/config')
+require('dotenv/config');
 
 export function fetchPoints(q){
 
-        let query = "http://54.201.93.142:7000/";
+        // let query = process.env.REACT_APP_BACKEND_API_URL;
 
         // if(q){
         //     query += 'opinion?product=' + q;
@@ -63,7 +63,7 @@ function test(){
 			"location": [-89.57151, 35.497129],
 			"id": 990433011953958912,
 			"text": "Face is just a mask"
-		}]	`
+		}]	`;
 
 return JSON.parse(resp);
 }

@@ -14,7 +14,7 @@
     "chart.js": "^2.3"
   },
   "devDependencies": {
-    "ajv": "^6.4.0",
+    "ajv": "^6.12.3",
     "chart.js": "^2.3",
     "dotenv": "^5.0.1",
     "google-maps": "^3.2.1"
